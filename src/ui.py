@@ -547,7 +547,7 @@ def render_welcome(doc_count: int = 0):
     st.markdown(
         f"""
         <section class="hero">
-            <h1>Ask Louda AI</h1>
+            <h1>Louda AI</h1>
             <div class="hero-sub">{_safe(WELCOME_TEXT)}</div>
             <div class="hero-stat-row">
                 <div class="hero-pill">{doc_count} chunks indexed</div>

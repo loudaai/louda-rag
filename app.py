@@ -342,33 +342,40 @@ def inject_css():
             max-width: 820px !important;
             margin: 0 auto !important;
             position: relative !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
         }
 
         div[data-testid="stChatInput"] > div {
+            background: transparent !important;
             border: none !important;
             box-shadow: none !important;
         }
 
         div[data-testid="stChatInput"] textarea {
-            background: rgba(24,24,27,0.96) !important;
-            border: 1px solid var(--line) !important;
-            border-radius: 999px !important;
+            background: #18181b !important;
+            border: none !important;
+            border-radius: 24px !important;
             color: var(--ink) !important;
-            min-height: 58px !important;
-            padding: 1rem 3.5rem 1rem 1.35rem !important;
+            min-height: 52px !important;
+            padding: 0.85rem 3.2rem 0.85rem 1.25rem !important;
             font-size: 15px !important;
             outline: none !important;
             box-shadow: none !important;
+            resize: none !important;
+            line-height: 1.5 !important;
         }
 
         div[data-testid="stChatInput"] textarea:focus {
-            border-color: var(--line-strong) !important;
             outline: none !important;
             box-shadow: none !important;
+            border: none !important;
         }
 
         div[data-testid="stChatInput"] textarea::placeholder {
             color: var(--faint) !important;
+            opacity: 0.6 !important;
         }
 
         div[data-testid="stChatInput"] button {
@@ -376,11 +383,11 @@ def inject_css():
             right: 6px !important;
             top: 50% !important;
             transform: translateY(-50%) !important;
-            background: var(--ink) !important;
-            color: var(--bg) !important;
-            border-radius: 999px !important;
-            width: 40px !important;
-            height: 40px !important;
+            background: #f4f4f5 !important;
+            border-radius: 50% !important;
+            width: 34px !important;
+            height: 34px !important;
+            min-width: 34px !important;
             margin: 0 !important;
             padding: 0 !important;
             display: flex !important;
@@ -388,16 +395,19 @@ def inject_css():
             justify-content: center !important;
             transition: opacity 180ms ease !important;
             z-index: 1 !important;
+            border: none !important;
+            box-shadow: none !important;
+            cursor: pointer !important;
         }
 
         div[data-testid="stChatInput"] button:hover {
-            opacity: 0.85 !important;
+            opacity: 0.75 !important;
         }
 
         div[data-testid="stChatInput"] button svg {
-            fill: var(--bg) !important;
-            width: 17px !important;
-            height: 17px !important;
+            fill: #0c0c0f !important;
+            width: 16px !important;
+            height: 16px !important;
         }
 
         /* ---------- upload/buttons ---------- */
@@ -577,14 +587,8 @@ def render_welcome(doc_count: int = 0):
     st.markdown(
         f"""
         <section class="hero">
-            <div class="hero-chip">● Louda knowledge system</div>
-            <h1>Ask Louda AI</h1>
+            <h1>Louda AI</h1>
             <div class="hero-sub">{_safe(WELCOME_TEXT)}</div>
-            <div class="hero-stat-row">
-                <div class="hero-pill">{doc_count} chunks indexed</div>
-                <div class="hero-pill">Groq powered</div>
-                <div class="hero-pill">source grounded</div>
-            </div>
         </section>
         """,
         unsafe_allow_html=True,
@@ -721,7 +725,7 @@ for message in st.session_state.messages:
     else:
         render_answer(message.get("answer", "Louda hasn't shared that with me yet."))
 
-if prompt := st.chat_input("Ask Louda AI anything from the knowledge base..."):
+if prompt := st.chat_input("Ask anything from the knowledge base..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     render_user_message(prompt)
 
