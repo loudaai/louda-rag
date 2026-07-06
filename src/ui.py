@@ -663,7 +663,7 @@ def render_welcome(doc_count: int = 0):
     st.markdown(
         f"""
         <section class="hero">
-            <h1>Louda AI</h1>
+            <h1>Ask About Louda</h1>
             <div class="hero-sub">{_safe(WELCOME_TEXT)}</div>
         </section>
         """,
