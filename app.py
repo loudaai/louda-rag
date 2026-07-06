@@ -25,28 +25,7 @@ def _format_text(value: str) -> str:
     return escaped.replace("\n", "<br>")
 
 
-def _extract_source(source) -> dict:
-    """
-    Supports:
-    - LangChain Document objects
-    - plain dict sources
-    - strings
-    """
-    if hasattr(source, "metadata"):
-        metadata = source.metadata or {}
-        content = getattr(source, "page_content", "")
-    elif isinstance(source, dict):
-        metadata = source.get("metadata", source)
-        content = source.get("page_content", source.get("content", ""))
-    else:
-        metadata = {}
-        content = str(source)
 
-    return {
-        "source": metadata.get("source", "Uploaded document"),
-        "page": metadata.get("page", metadata.get("page_number", None)),
-        "content": content,
-    }
 
 
 def inject_css():
@@ -357,69 +336,17 @@ def inject_css():
             animation: fadeUp 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
-        /* ---------- sources ---------- */
-
-        .sources-wrap {
-            margin: -0.45rem 0 1.35rem;
-            animation: fadeUp 470ms cubic-bezier(0.16, 1, 0.3, 1) both;
-        }
-
-        .sources-title {
-            margin: 0 0 0.55rem;
-            color: var(--faint);
-            font-family: "JetBrains Mono", monospace;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-        }
-
-        .source-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0.7rem;
-        }
-
-        .source-card {
-            border: 1px solid var(--line);
-            border-radius: 14px;
-            padding: 0.78rem;
-            background: rgba(24,24,27,0.45);
-            min-height: 5rem;
-        }
-
-        .source-name {
-            color: var(--ink);
-            font-size: 12px;
-            font-weight: 600;
-            line-height: 1.35;
-            word-break: break-word;
-        }
-
-        .source-meta {
-            margin-top: 0.35rem;
-            color: var(--faint);
-            font-family: "JetBrains Mono", monospace;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .source-excerpt {
-            margin-top: 0.55rem;
-            color: var(--muted);
-            font-size: 12px;
-            line-height: 1.5;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
         /* ---------- input ---------- */
 
         div[data-testid="stChatInput"] {
             max-width: 820px !important;
             margin: 0 auto !important;
+            position: relative !important;
+        }
+
+        div[data-testid="stChatInput"] > div {
+            border: none !important;
+            box-shadow: none !important;
         }
 
         div[data-testid="stChatInput"] textarea {
@@ -429,13 +356,15 @@ def inject_css():
             color: var(--ink) !important;
             min-height: 58px !important;
             padding: 1rem 3.5rem 1rem 1.35rem !important;
-            box-shadow: 0 24px 70px -42px rgba(0,0,0,1) !important;
             font-size: 15px !important;
+            outline: none !important;
+            box-shadow: none !important;
         }
 
         div[data-testid="stChatInput"] textarea:focus {
             border-color: var(--line-strong) !important;
-            box-shadow: 0 0 0 1px rgba(244,244,245,0.08), 0 24px 70px -42px rgba(0,0,0,1) !important;
+            outline: none !important;
+            box-shadow: none !important;
         }
 
         div[data-testid="stChatInput"] textarea::placeholder {
@@ -443,22 +372,32 @@ def inject_css():
         }
 
         div[data-testid="stChatInput"] button {
+            position: absolute !important;
+            right: 6px !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
             background: var(--ink) !important;
             color: var(--bg) !important;
             border-radius: 999px !important;
             width: 40px !important;
             height: 40px !important;
-            margin-right: 0.28rem !important;
-            transition: transform 180ms ease, opacity 180ms ease !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: opacity 180ms ease !important;
+            z-index: 1 !important;
         }
 
         div[data-testid="stChatInput"] button:hover {
-            transform: scale(1.04) !important;
-            opacity: 0.86 !important;
+            opacity: 0.85 !important;
         }
 
         div[data-testid="stChatInput"] button svg {
             fill: var(--bg) !important;
+            width: 17px !important;
+            height: 17px !important;
         }
 
         /* ---------- upload/buttons ---------- */
@@ -551,10 +490,6 @@ def inject_css():
 
             .hero h1 {
                 font-size: 2.7rem;
-            }
-
-            .source-grid {
-                grid-template-columns: 1fr;
             }
 
             .answer-card {
@@ -680,56 +615,15 @@ def render_user_message(content: str):
     )
 
 
-def render_answer(answer: str, sources=None):
+def render_answer(answer: str):
     st.markdown(
         f"""
         <article class="answer-card">
             <div class="answer-topline">
                 <div class="answer-label">Louda AI</div>
-                <div class="answer-badge">grounded answer</div>
             </div>
             <div class="answer-content">{_format_text(answer)}</div>
         </article>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    if sources:
-        render_sources(sources)
-
-
-def render_sources(sources):
-    if not sources:
-        return
-
-    source_items = []
-    for source in sources[:4]:
-        parsed = _extract_source(source)
-        page = parsed["page"]
-        source_name = parsed["source"]
-        excerpt = parsed["content"]
-
-        page_text = f"Page {int(page) + 1}" if isinstance(page,
-                                                          int) else "Retrieved source"
-
-        source_items.append(
-            f"""
-            <div class="source-card">
-                <div class="source-name">{_safe(source_name)}</div>
-                <div class="source-meta">{_safe(page_text)}</div>
-                <div class="source-excerpt">{_format_text(excerpt[:260])}</div>
-            </div>
-            """
-        )
-
-    st.markdown(
-        f"""
-        <section class="sources-wrap">
-            <div class="sources-title">Sources</div>
-            <div class="source-grid">
-                {''.join(source_items)}
-            </div>
-        </section>
         """,
         unsafe_allow_html=True,
     )
@@ -825,10 +719,7 @@ for message in st.session_state.messages:
     if message["role"] == "user":
         render_user_message(message["content"])
     else:
-        render_answer(
-            message.get("answer", "Louda hasn't shared that with me yet."),
-            sources=message.get("sources", []),
-        )
+        render_answer(message.get("answer", "Louda hasn't shared that with me yet."))
 
 if prompt := st.chat_input("Ask Louda AI anything from the knowledge base..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
@@ -843,5 +734,5 @@ if prompt := st.chat_input("Ask Louda AI anything from the knowledge base..."):
         answer = result.get("answer", result.get("response", "Louda hasn't shared that with me yet."))
         sources = result.get("sources", result.get("source_documents", []))
 
-    st.session_state.messages.append({"role": "assistant", "answer": answer, "sources": sources})
-    render_answer(answer, sources=sources)
+    st.session_state.messages.append({"role": "assistant", "answer": answer})
+    render_answer(answer)
