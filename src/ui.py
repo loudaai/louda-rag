@@ -19,53 +19,28 @@ def inject_css():
         --border-strong: #3a3a42;
         --muted: #a0a0a8;
         --faint: #8a8a92;
-        --radius: 12px;
-        --radius-lg: 16px;
-        --content-w: 760px;
     }
-
-    * { font-family: 'Inter', system-ui, sans-serif; }
 
     .stApp { background-color: var(--bg); }
+    * { font-family: 'Inter', system-ui, sans-serif; }
 
-    /* --- LAYOUT: centered column --- */
-
-    main {
-        max-width: var(--content-w) !important;
-        margin: 0 auto !important;
-        padding: 0 1rem !important;
-        width: 100% !important;
-    }
-
+    /* --- main content width & centering --- */
     .block-container {
-        max-width: 100% !important;
-        padding: 0 !important;
-        margin: 0 !important;
+        max-width: 760px !important;
+        padding: 1rem 1rem 5rem !important;
+        margin: 0 auto !important;
     }
 
-    /* --- RESET ALL FOCUS RINGS --- */
-
-    *:focus, *:focus-visible, *:active {
-        outline: none !important;
-        box-shadow: none !important;
+    .main .block-container {
+        max-width: 760px !important;
+        padding: 1rem 1rem 5rem !important;
+        margin: 0 auto !important;
     }
 
-    *::-moz-focus-inner { border: 0 !important; }
-
-    button:focus, button:focus-visible, button:active,
-    textarea:focus, textarea:focus-visible, textarea:active,
-    input:focus, input:focus-visible, input:active,
-    select:focus, select:focus-visible, select:active,
-    [tabindex]:focus, [tabindex]:focus-visible, [tabindex]:active {
-        outline: none !important;
-        box-shadow: none !important;
-    }
-
-    /* --- HERO --- */
-
+    /* --- hero --- */
     .hero {
         text-align: center;
-        padding: 3rem 0 1rem;
+        padding: 2.5rem 0 1rem;
         animation: fadeIn 0.3s ease;
     }
 
@@ -95,11 +70,10 @@ def inject_css():
         font-weight: 400;
     }
 
-    /* --- CHAT INPUT --- */
-
+    /* --- chat input --- */
     .stChatInput {
-        max-width: 100% !important;
-        margin: 0 !important;
+        max-width: 760px !important;
+        margin: 0 auto !important;
         padding: 0 !important;
     }
 
@@ -114,9 +88,6 @@ def inject_css():
         min-height: 50px !important;
         transition: border-color 0.15s ease;
         resize: none !important;
-        outline: none !important;
-        box-shadow: none !important;
-        line-height: 1.4 !important;
     }
 
     .stChatInput textarea::placeholder {
@@ -126,17 +97,6 @@ def inject_css():
 
     .stChatInput textarea:focus {
         border-color: var(--border-strong) !important;
-        outline: none !important;
-        box-shadow: none !important;
-    }
-
-    div[data-testid="stChatInput"] {
-        position: relative !important;
-    }
-
-    div[data-testid="stChatInput"] > div:first-child {
-        border: none !important;
-        background: transparent !important;
     }
 
     div[data-testid="stChatInput"] button {
@@ -155,22 +115,12 @@ def inject_css():
         cursor: pointer !important;
         padding: 0 !important;
         z-index: 1 !important;
-        outline: none !important;
-        box-shadow: none !important;
         transition: opacity 0.15s ease;
     }
 
     div[data-testid="stChatInput"] button:hover {
+        background: var(--fg) !important;
         opacity: 0.75;
-        background: var(--fg) !important;
-    }
-
-    div[data-testid="stChatInput"] button:focus,
-    div[data-testid="stChatInput"] button:focus-visible,
-    div[data-testid="stChatInput"] button:active {
-        outline: none !important;
-        box-shadow: none !important;
-        background: var(--fg) !important;
     }
 
     div[data-testid="stChatInput"] button svg {
@@ -188,12 +138,11 @@ def inject_css():
         fill: var(--faint) !important;
     }
 
-    /* --- ANSWER CARD --- */
-
+    /* --- answer card --- */
     .answer-card {
         background: var(--surface);
         border: 1px solid var(--border);
-        border-radius: var(--radius-lg);
+        border-radius: 16px;
         padding: 1.5rem;
         margin: 0 0 1.25rem;
     }
@@ -204,10 +153,7 @@ def inject_css():
         line-height: 1.7;
     }
 
-    .answer-card .content p:last-child { margin-bottom: 0; }
-
-    /* --- USER MESSAGE --- */
-
+    /* --- user message --- */
     .user-message {
         text-align: right;
         margin: 0 0 1rem;
@@ -225,17 +171,10 @@ def inject_css():
         max-width: 72%;
     }
 
-    /* --- SIDEBAR --- */
-
+    /* --- sidebar --- */
     section[data-testid="stSidebar"] {
         background-color: var(--bg);
         border-right: 1px solid var(--border);
-        min-width: 230px !important;
-        max-width: 260px !important;
-    }
-
-    section[data-testid="stSidebar"] .st-emotion-cache-1gv3huu {
-        background-color: var(--bg);
     }
 
     .sidebar-brand { padding: 0 0 0.75rem; }
@@ -286,8 +225,7 @@ def inject_css():
         margin: 0.85rem 0;
     }
 
-    /* --- BUTTONS: all borderless minimal --- */
-
+    /* --- buttons --- */
     .stButton button {
         background: transparent !important;
         color: var(--muted) !important;
@@ -297,27 +235,14 @@ def inject_css():
         font-weight: 500 !important;
         padding: 0.3rem 0.75rem !important;
         transition: background 0.15s ease, color 0.15s ease !important;
-        outline: none !important;
-        box-shadow: none !important;
-        line-height: 1.4 !important;
     }
 
     .stButton button:hover {
         background: var(--surface) !important;
         color: var(--fg) !important;
-        border: none !important;
     }
 
-    .stButton button:focus,
-    .stButton button:focus-visible,
-    .stButton button:active {
-        outline: none !important;
-        box-shadow: none !important;
-        border: none !important;
-        background: var(--surface) !important;
-    }
-
-    /* sidebar buttons: text-only */
+    /* sidebar buttons */
     section[data-testid="stSidebar"] .stButton button {
         font-size: 11px !important;
         padding: 0.2rem 0 !important;
@@ -331,14 +256,12 @@ def inject_css():
         background: transparent !important;
     }
 
-    /* --- FILE UPLOADER --- */
-
+    /* --- file uploader --- */
     div[data-testid="stFileUploader"] section {
         border: 1px dashed var(--border) !important;
-        border-radius: var(--radius) !important;
+        border-radius: 12px !important;
         background: transparent !important;
         padding: 1rem !important;
-        transition: border-color 0.15s ease;
     }
 
     div[data-testid="stFileUploader"] section:hover {
@@ -352,7 +275,6 @@ def inject_css():
         border-radius: 6px !important;
         font-size: 12px !important;
         padding: 0.25rem 1rem !important;
-        transition: background 0.15s ease;
     }
 
     div[data-testid="stFileUploader"] button:hover {
@@ -360,8 +282,7 @@ def inject_css():
         color: var(--fg) !important;
     }
 
-    /* --- SPINNER --- */
-
+    /* --- spinner --- */
     .stSpinner > div {
         border-color: var(--border-strong) !important;
         border-top-color: var(--fg) !important;
@@ -369,8 +290,7 @@ def inject_css():
         height: 18px !important;
     }
 
-    /* --- INGESTION TOAST --- */
-
+    /* --- toast --- */
     .ingest-toast {
         text-align: center;
         font-size: 12px;
@@ -380,19 +300,7 @@ def inject_css():
 
     .ingest-toast.error { color: #ef4444; }
 
-    /* --- HIDE STREAMLIT CHROME --- */
-
-    footer { display: none !important; }
-    #MainMenu { visibility: hidden; }
-    .stAppDeployButton { display: none !important; }
-    .stAppToolbar { display: none !important; }
-    header[data-testid="stHeader"] {
-        background: transparent !important;
-        border: none !important;
-    }
-
-    /* --- ANIMATIONS --- */
-
+    /* --- animation --- */
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(5px); }
         to { opacity: 1; transform: translateY(0); }
@@ -400,12 +308,9 @@ def inject_css():
 
     .fade-in { animation: fadeIn 0.25s ease; }
 
-    /* --- RESPONSIVE --- */
-
-    @media (max-width: 820px) {
-        main {
-            padding: 0 0.75rem !important;
-        }
+    /* --- responsive --- */
+    @media (max-width: 768px) {
+        .block-container { padding: 0.5rem 0.75rem 5rem !important; }
 
         section[data-testid="stSidebar"] {
             min-width: 100% !important;
@@ -414,29 +319,11 @@ def inject_css():
             border-bottom: 1px solid var(--border);
         }
 
-        .hero { padding: 2rem 0 0.75rem; }
+        .hero { padding: 1.5rem 0 0.75rem; }
         .hero h1 { font-size: 1.5rem; }
 
         .answer-card { padding: 1rem; }
         .user-message .bubble { max-width: 100%; font-size: 13px; }
-
-        .stChatInput textarea {
-            font-size: 14px !important;
-            padding: 0.7rem 2.8rem 0.7rem 1rem !important;
-            min-height: 46px !important;
-        }
-
-        div[data-testid="stChatInput"] button {
-            width: 34px !important;
-            height: 34px !important;
-            right: 5px !important;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .hero { padding: 1.5rem 0 0.5rem; }
-        .hero h1 { font-size: 1.25rem; }
-        .hero .sub { font-size: 13px; }
     }
     </style>
     """, unsafe_allow_html=True)
