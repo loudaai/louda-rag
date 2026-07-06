@@ -1,11 +1,18 @@
 import html
+import os
+import tempfile
+from pathlib import Path
+
 from dotenv import load_dotenv
 
 load_dotenv()
 
 import streamlit as st
 
-from src.vector_store import count_documents
+from src.config import validate_config
+from src.document_loader import load_document, chunk_documents
+from src.vector_store import add_documents, count_documents
+from src.rag import ask
 from src.prompts import WELCOME_TEXT, EMPTY_UPLOAD_TEXT
 
 
@@ -743,3 +750,98 @@ def render_ingestion_status(success: bool, name: str):
             """,
             unsafe_allow_html=True,
         )
+
+
+# ---- app runtime ----
+
+st.set_page_config(
+    page_title="Louda AI",
+    page_icon="",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+
+inject_css()
+
+try:
+    validate_config()
+except ValueError as e:
+    st.error(str(e))
+    st.stop()
+
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+if "ingested" not in st.session_state:
+    st.session_state.ingested = set()
+
+    docs_dir = Path("docs")
+    if docs_dir.exists():
+        for doc_file in docs_dir.glob("*.*"):
+            if doc_file.suffix.lower() not in (".txt", ".md", ".pdf"):
+                continue
+            try:
+                docs, name = load_document(str(doc_file))
+                chunks = chunk_documents(docs)
+                for chunk in chunks:
+                    chunk.metadata["source"] = doc_file.name
+                add_documents(chunks)
+                st.session_state.ingested.add(doc_file.name)
+            except Exception as e:
+                st.warning(f"Could not auto-ingest {doc_file.name}: {e}")
+
+uploaded_files = render_sidebar()
+
+if uploaded_files:
+    for uploaded_file in uploaded_files:
+        if uploaded_file.name not in st.session_state.ingested:
+            suffix = Path(uploaded_file.name).suffix
+            with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+                tmp.write(uploaded_file.getvalue())
+                tmp_path = tmp.name
+            try:
+                docs, _ = load_document(tmp_path)
+                chunks = chunk_documents(docs)
+                for chunk in chunks:
+                    chunk.metadata["source"] = uploaded_file.name
+                success = add_documents(chunks)
+                render_ingestion_status(success, uploaded_file.name)
+                if success:
+                    st.session_state.ingested.add(uploaded_file.name)
+            except Exception as e:
+                st.error(f"Could not process {uploaded_file.name}: {e}")
+            finally:
+                if os.path.exists(tmp_path):
+                    os.unlink(tmp_path)
+
+doc_count = count_documents()
+
+if not st.session_state.messages:
+    render_welcome(doc_count=doc_count)
+    if doc_count == 0:
+        render_empty_state()
+
+for message in st.session_state.messages:
+    if message["role"] == "user":
+        render_user_message(message["content"])
+    else:
+        render_answer(
+            message.get("answer", "Louda hasn't shared that with me yet."),
+            sources=message.get("sources", []),
+        )
+
+if prompt := st.chat_input("Ask Louda AI anything from the knowledge base..."):
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    render_user_message(prompt)
+
+    if count_documents() == 0:
+        answer = "Louda hasn't shared that with me yet. Upload Louda's profile, notes, or project documents first."
+        sources = []
+    else:
+        with st.spinner(""):
+            result = ask(prompt)
+        answer = result.get("answer", result.get("response", "Louda hasn't shared that with me yet."))
+        sources = result.get("sources", result.get("source_documents", []))
+
+    st.session_state.messages.append({"role": "assistant", "answer": answer, "sources": sources})
+    render_answer(answer, sources=sources)
