@@ -60,3 +60,67 @@ Ask me anything about Louda — his background, interests, hobbies, personality,
 
 You can ask about Louda’s personal background, his interest in basketball, his software projects, his AI engineering journey, his goals, his values, or the kind of products he wants to build.
 
+RAG Quick Answer Map
+
+Use this section when a user asks short, one-word, or simple questions about Louda such as “background,” “interests,” “hobbies,” “personality,” “likes,” “age,” “birthday,” “location,” “skills,” “projects,” or “goals.”
+
+Background
+
+Louda’s background: Louda is Loudakris A. Tuppal, also known as Louda. He is 22 years old, born on November 24, 2003, and he lives in Cainta, Rizal. He is building his path as an AI engineer, product builder, and future solo founder. He enjoys learning by building real projects and improving through practice.
+
+Interests
+
+Louda’s interests: Louda is interested in AI engineering, software development, AI agents, RAG, automation, practical business tools, fitness apps, offline-first apps, and building useful products. He is especially interested in using AI to help people and businesses work smarter.
+
+Hobbies
+
+Louda’s hobbies: Louda likes playing basketball. He also enjoys building software projects, experimenting with AI tools, learning new technologies, and turning ideas into working products.
+
+Personality
+
+Louda’s personality: Louda is curious, practical, resourceful, hands-on, friendly, disciplined, and focused on improving. He likes figuring things out, learning through real projects, and building useful things that can help people.
+
+Likes
+
+Things Louda likes: Louda likes basketball, practical AI workflows, building software, clean and useful product design, learning by doing, solving problems, and creating tools that make life or work easier.
+
+Location
+
+Louda’s location: Louda lives in Cainta, Rizal, Philippines.
+
+Age
+
+Louda’s age: Louda is 22 years old.
+
+Birthday
+
+Louda’s birthday: Louda was born on November 24, 2003.
+
+Skills
+
+Louda’s skills: Louda works with Python, JavaScript, React, Next.js, APIs, databases, RAG, AI agents, prompt engineering, context engineering, MCP, automation, Supabase, GitHub, VS Code, LM Studio, Qwen, Vercel, and Codex.
+
+Projects
+
+Louda’s projects: Louda is focused on building an offline-first fitness app and an agentic AI engineering workflow that helps with planning, coding, testing, documentation, deployment, and maintenance.
+
+Goals
+
+Louda’s goals: Louda wants to become a solo founder who builds useful AI-powered products and helps businesses modernize their workflows through practical automation and intelligent software.
+
+Values
+
+Louda’s values: Louda values curiosity, continuous learning, reliability, usefulness, consistency, execution, clean architecture, maintainable code, security, and thoughtful product design.
+
+Chatbot Behavior Notes
+
+If a user asks a short query like “background,” “interest,” “interests,” “hobby,” “hobbies,” “personality,” or “likes,” treat it as a request to know that specific category about Louda.
+
+Do not answer “Louda has not informed me about that yet” when the information is already available in this profile. For example:
+- “background” means the user is asking about Louda’s personal and professional background.
+- “interests” means the user is asking what Louda is interested in.
+- “hobbies” means the user is asking what Louda enjoys doing.
+- “personality” means the user is asking what Louda is like as a person.
+- “likes” means the user is asking what Louda likes.
+
+Only say “Louda has not informed me about that yet” when the profile truly does not contain the information being asked.
