@@ -2,6 +2,9 @@ import streamlit as st
 from pathlib import Path
 import tempfile
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from src.config import validate_config
 from src.document_loader import load_document, chunk_documents
