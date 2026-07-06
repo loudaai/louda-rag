@@ -40,7 +40,6 @@ if "messages" not in st.session_state:
 
 if "ingested" not in st.session_state:
     st.session_state.ingested = set()
-
     docs_dir = Path("docs")
     if docs_dir.exists():
         for doc_file in docs_dir.glob("*.*"):
@@ -56,11 +55,11 @@ if "ingested" not in st.session_state:
                     st.warning(f"Could not auto-ingest {doc_file.name}: {e}")
 
 uploaded_files = render_sidebar()
-render_header()
+doc_count = count_documents()
 
 if uploaded_files:
     for uploaded_file in uploaded_files:
-        if uploaded_file.name not in st.session_state.get("ingested", set()):
+        if uploaded_file.name not in st.session_state.ingested:
             with tempfile.NamedTemporaryFile(
                 delete=False, suffix=Path(uploaded_file.name).suffix
             ) as tmp:
@@ -79,11 +78,8 @@ if uploaded_files:
             finally:
                 os.unlink(tmp_path)
 
-            if "ingested" not in st.session_state:
-                st.session_state.ingested = set()
             st.session_state.ingested.add(uploaded_file.name)
-
-doc_count = count_documents()
+            doc_count = count_documents()
 
 if doc_count == 0 and not st.session_state.messages:
     render_welcome()
@@ -92,21 +88,28 @@ elif doc_count > 0 and not st.session_state.messages:
     render_welcome()
 
 for message in st.session_state.messages:
-    with st.chat_message(message["role"], avatar="👤" if message["role"] == "user" else None):
-        if message["role"] == "assistant":
+    if message["role"] == "user":
+        st.markdown(f"""
+        <div class="user-message fade-in">
+            <div class="bubble">{message["content"]}</div>
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        with st.chat_message("assistant"):
             render_answer(
                 message["answer"],
                 message.get("sources", []),
                 message.get("chunks", []),
             )
-        else:
-            st.markdown(message["content"])
 
 if prompt := st.chat_input("Ask Louda AI a question..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
 
-    with st.chat_message("user", avatar="👤"):
-        st.markdown(prompt)
+    st.markdown(f"""
+    <div class="user-message fade-in">
+        <div class="bubble">{prompt}</div>
+    </div>
+    """, unsafe_allow_html=True)
 
     with st.chat_message("assistant"):
         with st.spinner(""):
