@@ -1,8 +1,9 @@
 import html
+
 import streamlit as st
 
+from src.prompts import EMPTY_UPLOAD_TEXT, WELCOME_TEXT
 from src.vector_store import count_documents
-from src.prompts import WELCOME_TEXT, EMPTY_UPLOAD_TEXT
 
 
 def _safe(value: str) -> str:
@@ -10,11 +11,10 @@ def _safe(value: str) -> str:
 
 
 def _format_text(value: str) -> str:
-    escaped = _safe(value)
-    return escaped.replace("\n", "<br>")
+    return _safe(value).replace("\n", "<br>")
 
 
-def inject_css():
+def inject_css() -> None:
     st.markdown(
         """
         <style>
@@ -36,7 +36,9 @@ def inject_css():
             font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
-        html, body, [class*="css"] {
+        html,
+        body,
+        [class*="css"] {
             background: var(--bg) !important;
             color: var(--ink) !important;
         }
@@ -53,8 +55,8 @@ def inject_css():
             position: fixed;
             inset: 0;
             pointer-events: none;
-            opacity: 0.18;
-            background-image: radial-gradient(circle, rgba(244,244,245,0.45) 1px, transparent 1px);
+            opacity: 0.16;
+            background-image: radial-gradient(circle, rgba(244,244,245,0.42) 1px, transparent 1px);
             background-size: 9px 9px;
             mask-image: radial-gradient(circle at 50% 0%, black 0%, transparent 48%);
             -webkit-mask-image: radial-gradient(circle at 50% 0%, black 0%, transparent 48%);
@@ -65,7 +67,7 @@ def inject_css():
             position: relative;
             z-index: 1;
             max-width: 820px !important;
-            padding: 2.25rem 1rem 7rem !important;
+            padding: 2.25rem 1rem 8rem !important;
             margin: 0 auto !important;
         }
 
@@ -77,7 +79,8 @@ def inject_css():
             display: none !important;
         }
 
-        MainMenu, footer {
+        #MainMenu,
+        footer {
             visibility: hidden !important;
         }
 
@@ -165,15 +168,15 @@ def inject_css():
 
         .hero {
             text-align: center;
-            padding: 4.75rem 0 2.5rem;
+            padding: 4.4rem 0 2.1rem;
             animation: fadeUp 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
         .hero h1 {
             margin: 0;
-            font-size: clamp(2.4rem, 7vw, 4.6rem);
-            line-height: 0.92;
-            letter-spacing: -0.08em;
+            font-size: clamp(2.25rem, 7vw, 4.2rem);
+            line-height: 0.95;
+            letter-spacing: -0.075em;
             font-weight: 800;
             color: var(--ink);
         }
@@ -184,26 +187,6 @@ def inject_css():
             color: var(--muted);
             font-size: 15px;
             line-height: 1.7;
-        }
-
-        .hero-stat-row {
-            margin: 1.5rem auto 0;
-            display: flex;
-            justify-content: center;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-        }
-
-        .hero-pill {
-            border: 1px solid var(--line);
-            border-radius: 999px;
-            padding: 0.35rem 0.65rem;
-            font-family: "JetBrains Mono", monospace;
-            font-size: 10px;
-            color: var(--faint);
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            background: rgba(24,24,27,0.38);
         }
 
         /* ---------- messages ---------- */
@@ -223,7 +206,7 @@ def inject_css():
             max-width: min(92%, 620px);
             background: var(--ink);
             color: var(--bg);
-            border-radius: 18px 18px 4px 18px;
+            border-radius: 18px 18px 5px 18px;
             padding: 0.72rem 1rem;
             font-size: 14px;
             line-height: 1.55;
@@ -264,10 +247,6 @@ def inject_css():
             line-height: 1.78;
         }
 
-        .answer-content strong {
-            font-weight: 700;
-        }
-
         .empty-state {
             max-width: 34rem;
             margin: 0 auto 1.75rem;
@@ -282,52 +261,101 @@ def inject_css():
             animation: fadeUp 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
-        /* ---------- ChatGPT-like input ---------- */
+        /* ---------- Streamlit bottom area ---------- */
+
+        div[data-testid="stBottomBlockContainer"],
+        div[data-testid="stBottom"] {
+            background: linear-gradient(180deg, rgba(12,12,15,0), rgba(12,12,15,0.96) 32%) !important;
+            padding-top: 1rem !important;
+        }
+
+        /* ---------- ChatGPT/OpenAI-style input ---------- */
 
         div[data-testid="stChatInput"] {
+            position: relative !important;
+            width: min(820px, calc(100vw - 2rem)) !important;
             max-width: 820px !important;
             margin: 0 auto !important;
+            padding: 0 0 1rem 0 !important;
             background: transparent !important;
         }
 
-        div[data-testid="stChatInput"] > div {
+        /*
+        Streamlit versions differ. Some use a form; some use nested divs.
+        Style both so the input always becomes a compact rounded composer.
+        */
+        div[data-testid="stChatInput"] > div,
+        div[data-testid="stChatInput"] form {
             position: relative !important;
+            display: flex !important;
+            align-items: center !important;
+
+            min-height: 58px !important;
+            max-height: 180px !important;
+
+            padding: 0.45rem 3.35rem 0.45rem 1.05rem !important;
+
+            background: #18181b !important;
+            border: 1px solid #2a2a30 !important;
+            border-radius: 999px !important;
+
+            box-shadow: 0 18px 50px -38px rgba(0,0,0,0.95) !important;
+            outline: none !important;
+        }
+
+        div[data-testid="stChatInput"] [data-baseweb="textarea"],
+        div[data-testid="stChatInput"] [data-baseweb="base-input"] {
+            width: 100% !important;
+            flex: 1 1 auto !important;
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
+            outline: none !important;
+            padding: 0 !important;
         }
 
         div[data-testid="stChatInput"] textarea {
-            background: #18181b !important;
-            border: 1px solid #2a2a30 !important;
-            border-radius: 28px !important;
-            color: var(--ink) !important;
-            min-height: 56px !important;
-            padding: 1rem 3.6rem 1rem 1.25rem !important;
+            width: 100% !important;
+            min-height: 28px !important;
+            max-height: 130px !important;
+
+            padding: 0.42rem 0 !important;
+            margin: 0 !important;
+
+            background: transparent !important;
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+
+            color: #f4f4f5 !important;
             font-size: 15px !important;
             line-height: 1.5 !important;
-            box-shadow: none !important;
-            outline: none !important;
+
             resize: none !important;
         }
 
         div[data-testid="stChatInput"] textarea:focus,
         div[data-testid="stChatInput"] textarea:focus-visible,
-        div[data-testid="stChatInput"] textarea:active {
-            border: 1px solid #2a2a30 !important;
+        div[data-testid="stChatInput"] textarea:active,
+        div[data-testid="stChatInput"] [data-baseweb="textarea"]:focus,
+        div[data-testid="stChatInput"] [data-baseweb="textarea"]:focus-within,
+        div[data-testid="stChatInput"] [data-baseweb="base-input"]:focus-within {
+            border: none !important;
             outline: none !important;
             box-shadow: none !important;
         }
 
         div[data-testid="stChatInput"] textarea::placeholder {
-            color: var(--faint) !important;
-            opacity: 0.8 !important;
+            color: #8a8a92 !important;
+            opacity: 0.88 !important;
         }
 
-        div[data-testid="stChatInput"] button {
+        div[data-testid="stChatInput"] button,
+        button[data-testid="stChatInputSubmitButton"] {
             position: absolute !important;
             right: 10px !important;
             top: 50% !important;
+            bottom: auto !important;
             transform: translateY(-50%) !important;
 
             width: 38px !important;
@@ -337,35 +365,41 @@ def inject_css():
             margin: 0 !important;
             padding: 0 !important;
 
-            border-radius: 999px !important;
             border: none !important;
+            border-radius: 999px !important;
 
-            background: var(--ink) !important;
-            color: var(--bg) !important;
+            background: #f4f4f5 !important;
+            color: #0c0c0f !important;
 
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
 
             box-shadow: none !important;
-            transition: opacity 160ms ease !important;
-            z-index: 5 !important;
+            cursor: pointer !important;
+            z-index: 50 !important;
+            transition: opacity 160ms ease, transform 160ms ease !important;
         }
 
-        div[data-testid="stChatInput"] button:hover {
-            opacity: 0.85 !important;
-            transform: translateY(-50%) !important;
+        div[data-testid="stChatInput"] button:hover,
+        button[data-testid="stChatInputSubmitButton"]:hover {
+            opacity: 0.86 !important;
+            transform: translateY(-50%) scale(1.03) !important;
         }
 
-        div[data-testid="stChatInput"] button:disabled {
+        div[data-testid="stChatInput"] button:disabled,
+        button[data-testid="stChatInputSubmitButton"]:disabled {
             background: #3a3a42 !important;
-            opacity: 0.55 !important;
+            opacity: 0.45 !important;
+            cursor: default !important;
         }
 
-        div[data-testid="stChatInput"] button svg {
-            fill: var(--bg) !important;
+        div[data-testid="stChatInput"] button svg,
+        button[data-testid="stChatInputSubmitButton"] svg {
             width: 17px !important;
             height: 17px !important;
+            fill: #0c0c0f !important;
+            color: #0c0c0f !important;
         }
 
         /* ---------- upload/buttons ---------- */
@@ -449,24 +483,106 @@ def inject_css():
 
         @media (max-width: 768px) {
             .block-container {
-                padding: 1rem 0.8rem 7rem !important;
+                max-width: 100% !important;
+                padding: 1.15rem 1rem 7.5rem !important;
             }
 
             .hero {
-                padding-top: 2.5rem;
+                padding: 2.15rem 0 1.65rem !important;
             }
 
             .hero h1 {
-                font-size: 2.7rem;
+                font-size: 2.05rem !important;
+                line-height: 1 !important;
+                letter-spacing: -0.06em !important;
             }
 
-            .answer-card {
-                padding: 1rem;
-                border-radius: 16px;
+            .hero-sub {
+                max-width: 21rem !important;
+                margin-top: 0.85rem !important;
+                font-size: 14px !important;
+                line-height: 1.55 !important;
+            }
+
+            .thread {
+                margin-top: 0.5rem !important;
+            }
+
+            .user-message {
+                margin-bottom: 0.85rem !important;
+                padding-left: 2rem !important;
             }
 
             .user-bubble {
-                max-width: 100%;
+                max-width: 86% !important;
+                border-radius: 18px 18px 5px 18px !important;
+                padding: 0.65rem 0.9rem !important;
+                font-size: 14px !important;
+                line-height: 1.5 !important;
+            }
+
+            .answer-card {
+                border-radius: 18px !important;
+                padding: 1rem !important;
+                margin-bottom: 1rem !important;
+                box-shadow: none !important;
+            }
+
+            .answer-topline {
+                margin-bottom: 0.65rem !important;
+            }
+
+            .answer-label {
+                font-size: 9px !important;
+            }
+
+            .answer-content {
+                font-size: 15px !important;
+                line-height: 1.65 !important;
+            }
+
+            div[data-testid="stChatInput"] {
+                width: calc(100vw - 1.2rem) !important;
+                max-width: calc(100vw - 1.2rem) !important;
+                padding-bottom: 0.75rem !important;
+            }
+
+            div[data-testid="stChatInput"] > div,
+            div[data-testid="stChatInput"] form {
+                min-height: 54px !important;
+                border-radius: 999px !important;
+                padding: 0.4rem 3rem 0.4rem 1rem !important;
+            }
+
+            div[data-testid="stChatInput"] textarea {
+                min-height: 26px !important;
+                max-height: 110px !important;
+                font-size: 14px !important;
+                padding: 0.4rem 0 !important;
+            }
+
+            div[data-testid="stChatInput"] button,
+            button[data-testid="stChatInputSubmitButton"] {
+                width: 34px !important;
+                height: 34px !important;
+                min-width: 34px !important;
+                right: 9px !important;
+            }
+
+            div[data-testid="stChatInput"] button svg,
+            button[data-testid="stChatInputSubmitButton"] svg {
+                width: 15px !important;
+                height: 15px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem !important;
+            }
+
+            .hero-sub {
+                font-size: 13px !important;
             }
         }
         </style>
@@ -549,11 +665,6 @@ def render_welcome(doc_count: int = 0):
         <section class="hero">
             <h1>Louda AI</h1>
             <div class="hero-sub">{_safe(WELCOME_TEXT)}</div>
-            <div class="hero-stat-row">
-                <div class="hero-pill">{doc_count} chunks indexed</div>
-                <div class="hero-pill">Groq powered</div>
-                <div class="hero-pill">Private RAG</div>
-            </div>
         </section>
         """,
         unsafe_allow_html=True,
