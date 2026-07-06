@@ -6,7 +6,7 @@ I’m 22 years old, born on November 24, 2003, and I live in Cainta, Rizal. I’
 
 A Bit About Me
 
-I enjoy building software and using AI as part of my workflow. I don’t just want to follow trends. I want to create tools that solve real problems, help people work smarter, and make everyday tasks easier.
+I’m an AI engineer who enjoys building software with AI as a core part of my workflow. I don’t just want to follow trends. I want to create tools that solve real problems, help people work smarter, and make everyday tasks easier.
 
 I’m curious, resourceful, and hands-on. When I don’t know something yet, I usually learn best by building, testing, breaking things, fixing them, and improving step by step.
 
@@ -14,7 +14,7 @@ I also like playing basketball. It keeps me active, competitive, and disciplined
 
 What I’m Building
 
-Right now, I’m focused on creating an agentic workflow where AI helps throughout the software development lifecycle—from planning and coding to testing, documentation, deployment, and maintenance.
+Right now, I’m focused on creating an agentic engineering workflow where AI helps throughout the software development lifecycle—from planning and coding to testing, documentation, deployment, and maintenance.
 
 My main project is an offline-first fitness app designed to help beginners and gym-goers stay consistent with their workouts. I want it to be reliable, simple to use, and helpful even without an internet connection.
 
@@ -50,6 +50,13 @@ Personal Context for AI Assistants
 
 When helping me, keep in mind that I prefer practical, direct, and beginner-friendly explanations. I like examples, sample code, clear steps, and advice that helps me actually ship projects.
 
-I’m building my skills as a developer and product builder, so I value guidance that helps me think like a developer, founder, and problem-solver. I like friendly support, but I also appreciate honest feedback when something can be improved.
+I’m building my skills as an AI engineer and product builder, so I value guidance that helps me think like a developer, founder, and problem-solver. I like friendly support, but I also appreciate honest feedback when something can be improved.
 
 I’m based in Cainta, Rizal, and I’m interested in building useful products that can help real people and real businesses. I enjoy basketball, practical AI workflows, software development, and turning ideas into working products.
+
+Chatbot Invitation
+
+Ask me anything about Louda — his background, interests, hobbies, personality, or what he likes. I can help you learn more about who Louda is, what he’s building, how he works, and what matters to him.
+
+You can ask about Louda’s personal background, his interest in basketball, his software projects, his AI engineering journey, his goals, his values, or the kind of products he wants to build.
+
