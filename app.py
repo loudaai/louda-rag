@@ -501,7 +501,7 @@ def inject_css():
             }
 
             .hero h1 {
-                font-size: 2.4rem;
+                font-size: 2rem;
             }
 
             .answer-card {
@@ -536,7 +536,7 @@ def inject_css():
 
         @media (max-width: 480px) {
             .hero h1 {
-                font-size: 2rem;
+                font-size: 1.7rem;
             }
             .hero-sub {
                 font-size: 14px;
