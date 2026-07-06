@@ -178,7 +178,7 @@ def main() -> None:
 
     render_history()
 
-    prompt = st.chat_input("Ask anything from the knowledge base...")
+    prompt = st.chat_input("Ask anything")
 
     if prompt:
         st.session_state.messages.append(
