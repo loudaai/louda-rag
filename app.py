@@ -382,8 +382,9 @@ def inject_css():
         div[data-testid="stChatInput"] button {
             position: absolute !important;
             right: 6px !important;
-            top: 50% !important;
-            transform: translateY(-50%) !important;
+            bottom: 6px !important;
+            top: auto !important;
+            transform: none !important;
             background: #f4f4f5 !important;
             border-radius: 50% !important;
             width: 34px !important;
@@ -523,6 +524,7 @@ def inject_css():
                 height: 30px !important;
                 min-width: 30px !important;
                 right: 5px !important;
+                bottom: 5px !important;
             }
 
             div[data-testid="stChatInput"] button svg {
