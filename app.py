@@ -1,3 +1,17 @@
+import os
+import tempfile
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import streamlit as st
+
+from src.config import validate_config
+from src.document_loader import load_document, chunk_documents
+from src.vector_store import add_documents, count_documents
+from src.rag import ask
 from src.ui import (
     inject_css,
     render_sidebar,
@@ -7,18 +21,6 @@ from src.ui import (
     render_user_message,
     render_ingestion_status,
 )
-from src.rag import ask
-from src.vector_store import add_documents, count_documents
-from src.document_loader import load_document, chunk_documents
-from src.config import validate_config
-import os
-import tempfile
-from pathlib import Path
-
-import streamlit as st
-from dotenv import load_dotenv
-
-load_dotenv()
 
 
 st.set_page_config(
