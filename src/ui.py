@@ -21,35 +21,56 @@ def inject_css():
         --faint: #8a8a92;
         --radius: 12px;
         --radius-lg: 16px;
-        --content-width: 46rem;
+        --content-w: 760px;
     }
 
     * { font-family: 'Inter', system-ui, sans-serif; }
 
-    .stApp {
-        background-color: var(--bg);
-    }
+    .stApp { background-color: var(--bg); }
 
-    .main > .block-container {
-        max-width: var(--content-width) !important;
-        padding: 1.5rem 1rem 5rem !important;
+    /* --- LAYOUT : single centered column --- */
+
+    .main .block-container {
+        max-width: var(--content-w) !important;
+        padding: 0 1rem !important;
         margin: 0 auto !important;
     }
 
-    section[data-testid="stSidebar"] + .main .block-container {
-        max-width: var(--content-width) !important;
-        padding: 1.5rem 1rem 5rem !important;
-        margin: 0 auto !important;
+    /* --- Streamlit chrome reset --- */
+
+    *:focus, *:focus-visible, *:active {
+        outline: none !important;
+        box-shadow: none !important;
+        border-color: var(--border) !important;
     }
+
+    *::-moz-focus-inner { border: 0 !important; }
+
+    button:focus, button:focus-visible, button:active {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+    textarea:focus, textarea:focus-visible, textarea:active,
+    input:focus, input:focus-visible, input:active {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+    .st-emotion-cache-1gv3huu, .st-emotion-cache-1dp5vir {
+        background-color: transparent !important;
+    }
+
+    /* --- HERO --- */
 
     .hero {
         text-align: center;
-        padding: 2.5rem 0 1.5rem;
+        padding: 3.5rem 0 1.25rem;
         animation: fadeIn 0.3s ease;
     }
 
     .hero h1 {
-        font-size: 2.2rem;
+        font-size: 2.25rem;
         font-weight: 600;
         letter-spacing: -0.03em;
         color: var(--fg);
@@ -74,14 +95,12 @@ def inject_css():
         font-weight: 400;
     }
 
+    /* --- CHAT INPUT --- */
+
     .stChatInput {
-        max-width: var(--content-width) !important;
+        max-width: var(--content-w) !important;
         margin: 0 auto !important;
         padding: 0 !important;
-    }
-
-    .stChatInputContainer {
-        border: none !important;
     }
 
     .stChatInput textarea {
@@ -89,27 +108,44 @@ def inject_css():
         border: 1px solid var(--border) !important;
         border-radius: 24px !important;
         color: var(--fg) !important;
-        padding: 0.75rem 3rem 0.75rem 1.25rem !important;
+        padding: 0.85rem 3.2rem 0.85rem 1.5rem !important;
         font-size: 15px !important;
-        transition: border-color 0.15s ease, box-shadow 0.15s ease;
-        min-height: 48px !important;
+        caret-color: var(--fg) !important;
+        min-height: 52px !important;
+        transition: border-color 0.15s ease;
+        resize: none !important;
+        outline: none !important;
+        box-shadow: none !important;
     }
 
     .stChatInput textarea::placeholder {
         color: var(--faint) !important;
+        opacity: 0.6;
     }
 
     .stChatInput textarea:focus {
         border-color: var(--border-strong) !important;
-        box-shadow: 0 0 0 1px var(--border-strong) !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+    /* send button wrapper reset */
+    div[data-testid="stChatInput"] {
+        position: relative !important;
+    }
+
+    div[data-testid="stChatInput"] > div:first-child {
+        border: none !important;
+        background: transparent !important;
     }
 
     div[data-testid="stChatInput"] button {
         position: absolute !important;
-        right: 6px !important;
-        top: 6px !important;
-        width: 36px !important;
-        height: 36px !important;
+        right: 7px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        width: 38px !important;
+        height: 38px !important;
         border-radius: 50% !important;
         background: var(--fg) !important;
         border: none !important;
@@ -119,10 +155,23 @@ def inject_css():
         cursor: pointer !important;
         padding: 0 !important;
         z-index: 1 !important;
+        outline: none !important;
+        box-shadow: none !important;
+        transition: opacity 0.15s ease, transform 0.15s ease;
     }
 
     div[data-testid="stChatInput"] button:hover {
-        opacity: 0.85;
+        opacity: 0.8;
+        transform: translateY(-50%) scale(1.04) !important;
+        background: var(--fg) !important;
+    }
+
+    div[data-testid="stChatInput"] button:focus,
+    div[data-testid="stChatInput"] button:focus-visible,
+    div[data-testid="stChatInput"] button:active {
+        outline: none !important;
+        box-shadow: none !important;
+        background: var(--fg) !important;
     }
 
     div[data-testid="stChatInput"] button svg {
@@ -133,22 +182,21 @@ def inject_css():
 
     div[data-testid="stChatInput"] button:disabled {
         background: var(--surface-strong) !important;
-        opacity: 0.4;
+        opacity: 0.35;
     }
 
     div[data-testid="stChatInput"] button:disabled svg {
         fill: var(--faint) !important;
     }
 
+    /* --- ANSWER CARD --- */
+
     .answer-card {
         background: var(--surface);
         border: 1px solid var(--border);
         border-radius: var(--radius-lg);
         padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        max-width: var(--content-width);
-        margin-left: auto;
-        margin-right: auto;
+        margin: 0 0 1.25rem;
     }
 
     .answer-card .content {
@@ -157,18 +205,13 @@ def inject_css():
         line-height: 1.7;
     }
 
-    .answer-card .content p {
-        margin: 0 0 0.75rem;
-    }
+    .answer-card .content p:last-child { margin-bottom: 0; }
 
-    .answer-card .content p:last-child {
-        margin-bottom: 0;
-    }
+    /* --- USER MESSAGE --- */
 
     .user-message {
-        max-width: var(--content-width);
-        margin: 0 auto 1rem;
         text-align: right;
+        margin: 0 0 1rem;
     }
 
     .user-message .bubble {
@@ -176,16 +219,27 @@ def inject_css():
         background: var(--surface-strong);
         border: 1px solid var(--border);
         border-radius: 18px 18px 4px 18px;
-        padding: 0.6rem 1.1rem;
+        padding: 0.6rem 1.2rem;
         font-size: 14px;
         color: var(--fg);
         line-height: 1.5;
-        max-width: 75%;
+        max-width: 72%;
     }
 
-    .sidebar-brand {
-        padding: 0.25rem 0 1rem;
+    /* --- SIDEBAR --- */
+
+    section[data-testid="stSidebar"] {
+        background-color: var(--bg);
+        border-right: 1px solid var(--border);
+        min-width: 230px !important;
+        max-width: 260px !important;
     }
+
+    section[data-testid="stSidebar"] .st-emotion-cache-1gv3huu {
+        background-color: var(--bg);
+    }
+
+    .sidebar-brand { padding: 0 0 1rem; }
 
     .sidebar-brand .logo {
         font-size: 13px;
@@ -200,7 +254,7 @@ def inject_css():
         margin-top: 0.1rem;
     }
 
-    .sidebar-section {
+    .sidebar-label {
         font-size: 10px;
         font-weight: 500;
         letter-spacing: 0.18em;
@@ -227,43 +281,81 @@ def inject_css():
 
     .status-dot.active { background-color: #22c55e; }
 
+    hr {
+        border: none !important;
+        border-top: 1px solid var(--border) !important;
+        opacity: 0.5;
+        margin: 1rem 0;
+    }
+
+    /* --- FILE UPLOADER --- */
+
     div[data-testid="stFileUploader"] section {
         border: 1px dashed var(--border) !important;
         border-radius: var(--radius) !important;
         background: transparent !important;
         padding: 1.2rem !important;
+        transition: border-color 0.15s ease;
     }
 
     div[data-testid="stFileUploader"] section:hover {
         border-color: var(--border-strong) !important;
     }
 
+    div[data-testid="stFileUploader"] button {
+        background: var(--surface-strong) !important;
+        color: var(--muted) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+        font-size: 12px !important;
+        padding: 0.3rem 1rem !important;
+    }
+
+    /* --- BUTTONS : all minimal --- */
+
     .stButton button {
+        background: transparent !important;
+        color: var(--muted) !important;
+        border: none !important;
         border-radius: 8px !important;
         font-size: 12px !important;
         font-weight: 500 !important;
-        padding: 0.35rem 1rem !important;
-        background: var(--fg) !important;
-        color: var(--bg) !important;
-        border: none !important;
-        transition: opacity 0.15s ease;
+        padding: 0.35rem 0.85rem !important;
+        transition: background 0.15s ease, color 0.15s ease !important;
+        outline: none !important;
+        box-shadow: none !important;
     }
 
     .stButton button:hover {
-        opacity: 0.85;
-        background: var(--fg) !important;
-    }
-
-    .stButton button[kind="secondary"] {
-        background: transparent !important;
-        color: var(--muted) !important;
-        border: 1px solid var(--border) !important;
-    }
-
-    .stButton button[kind="secondary"]:hover {
-        border-color: var(--border-strong) !important;
+        background: var(--surface) !important;
         color: var(--fg) !important;
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
     }
+
+    .stButton button:focus, .stButton button:focus-visible, .stButton button:active {
+        outline: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        background: var(--surface) !important;
+    }
+
+    /* sidebar "clear" button - even more minimal */
+    section[data-testid="stSidebar"] .stButton button {
+        font-size: 11px !important;
+        padding: 0.25rem 0 !important;
+        color: var(--faint) !important;
+        border: none !important;
+        width: auto !important;
+    }
+
+    section[data-testid="stSidebar"] .stButton button:hover {
+        color: var(--muted) !important;
+        background: transparent !important;
+    }
+
+    /* --- SPINNER --- */
 
     .stSpinner > div {
         border-color: var(--border-strong) !important;
@@ -272,108 +364,75 @@ def inject_css():
         height: 20px !important;
     }
 
+    /* --- INGESTION TOAST --- */
+
     .ingest-toast {
         text-align: center;
-        font-size: 13px;
+        font-size: 12px;
         color: var(--muted);
-        padding: 0.25rem 0;
+        padding: 0.15rem 0;
     }
 
-    .ingest-toast.error {
-        color: #ef4444;
-    }
+    .ingest-toast.error { color: #ef4444; }
 
-    hr {
-        border-color: var(--border) !important;
-        opacity: 0.5;
-        margin: 1rem 0;
-    }
+    /* --- HIDE STREAMLIT CHROME --- */
 
     footer { display: none !important; }
     #MainMenu { visibility: hidden; }
     header { visibility: hidden; }
 
-    section[data-testid="stSidebar"] {
-        background-color: var(--bg);
-        border-right: 1px solid var(--border);
-        min-width: 240px !important;
-        max-width: 280px !important;
-        width: 260px !important;
-    }
-
-    section[data-testid="stSidebar"] .st-emotion-cache-1gv3huu {
-        background-color: var(--bg);
-    }
+    /* --- ANIMATIONS --- */
 
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(6px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
-    .fade-in {
-        animation: fadeIn 0.3s ease;
-    }
+    .fade-in { animation: fadeIn 0.3s ease; }
 
-    @media (max-width: 768px) {
+    /* --- RESPONSIVE --- */
+
+    @media (max-width: 820px) {
+        :root { --content-w: 100%; }
+
+        .main .block-container {
+            padding: 0 0.75rem !important;
+        }
+
         section[data-testid="stSidebar"] {
             min-width: 100% !important;
             max-width: 100% !important;
-            width: 100% !important;
             border-right: none !important;
             border-bottom: 1px solid var(--border);
-            position: relative !important;
         }
 
-        .main > .block-container,
-        section[data-testid="stSidebar"] + .main .block-container {
-            max-width: 100% !important;
-            padding: 1rem 0.75rem 6rem !important;
-        }
-
-        .hero { padding: 1.5rem 0 1rem; }
+        .hero { padding: 2rem 0 1rem; }
         .hero h1 { font-size: 1.5rem; }
 
-        .answer-card {
-            padding: 1rem;
-            border-radius: var(--radius);
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-        }
+        .answer-card { padding: 1rem; }
 
-        .user-message .bubble {
-            max-width: 100%;
-            font-size: 13px;
-        }
+        .user-message .bubble { max-width: 100%; }
 
         .stChatInput textarea {
             font-size: 14px !important;
-            padding: 0.65rem 2.8rem 0.65rem 1rem !important;
+            padding: 0.75rem 2.8rem 0.75rem 1rem !important;
+            min-height: 46px !important;
         }
 
         div[data-testid="stChatInput"] button {
-            right: 4px !important;
-            top: 4px !important;
-            width: 32px !important;
-            height: 32px !important;
+            width: 34px !important;
+            height: 34px !important;
+            right: 5px !important;
         }
     }
 
     @media (max-width: 480px) {
-        .hero h1 { font-size: 1.3rem; }
+        .hero h1 { font-size: 1.25rem; }
         .hero .sub { font-size: 13px; }
+        .hero { padding: 1.5rem 0 0.75rem; }
     }
     </style>
     """, unsafe_allow_html=True)
-
-
-def render_header(doc_count: int):
-    if doc_count > 0:
-        st.markdown("""
-        <div class="hero">
-            <h1>LOUDA AI</h1>
-            <div class="micro">ask the knowledge base</div>
-        </div>
-        """, unsafe_allow_html=True)
 
 
 def render_welcome():
@@ -388,7 +447,7 @@ def render_welcome():
 
 def render_empty_state():
     st.markdown(f"""
-    <div style="text-align:center; padding: 2rem 0 3rem; animation: fadeIn 0.3s ease;">
+    <div style="text-align:center; padding: 1.5rem 0 2.5rem; animation: fadeIn 0.3s ease;">
         <div style="font-size:13px; color:var(--faint); font-family:'Inter',ui-monospace,monospace; letter-spacing:0.05em;">
             {EMPTY_UPLOAD_TEXT}
         </div>
@@ -426,7 +485,7 @@ def render_sidebar():
         """, unsafe_allow_html=True)
 
         st.markdown("<hr>", unsafe_allow_html=True)
-        st.markdown('<div class="sidebar-section">Upload</div>', unsafe_allow_html=True)
+        st.markdown('<div class="sidebar-label">Upload</div>', unsafe_allow_html=True)
 
         uploaded_files = st.file_uploader(
             "",
@@ -435,10 +494,9 @@ def render_sidebar():
             label_visibility="collapsed",
         )
 
-        st.markdown("<br>", unsafe_allow_html=True)
-
         if doc_count > 0:
-            if st.button("Clear Knowledge Base", use_container_width=True, type="secondary"):
+            st.markdown("<br>", unsafe_allow_html=True)
+            if st.button("Clear knowledge base", use_container_width=True):
                 from src.vector_store import delete_all
                 delete_all()
                 st.rerun()

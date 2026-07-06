@@ -12,7 +12,6 @@ from src.vector_store import add_documents, count_documents
 from src.rag import ask
 from src.ui import (
     inject_css,
-    render_header,
     render_sidebar,
     render_welcome,
     render_empty_state,
@@ -84,7 +83,7 @@ if uploaded_files:
 if doc_count == 0 and not st.session_state.messages:
     render_welcome()
     render_empty_state()
-elif doc_count > 0 and not st.session_state.messages:
+elif not st.session_state.messages:
     render_welcome()
 
 for message in st.session_state.messages:
