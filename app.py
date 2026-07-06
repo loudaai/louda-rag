@@ -1,4 +1,8 @@
 import html
+from dotenv import load_dotenv
+
+load_dotenv()
+
 import streamlit as st
 
 from src.vector_store import count_documents
