@@ -38,6 +38,23 @@ except ValueError as e:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+if "ingested" not in st.session_state:
+    st.session_state.ingested = set()
+
+    docs_dir = Path("docs")
+    if docs_dir.exists():
+        for doc_file in docs_dir.glob("*.*"):
+            if doc_file.suffix.lower() in (".txt", ".md", ".pdf"):
+                try:
+                    docs, name = load_document(str(doc_file))
+                    chunks = chunk_documents(docs)
+                    for chunk in chunks:
+                        chunk.metadata["source"] = name
+                    add_documents(chunks)
+                    st.session_state.ingested.add(name)
+                except Exception as e:
+                    st.warning(f"Could not auto-ingest {doc_file.name}: {e}")
+
 uploaded_files = render_sidebar()
 render_header()
 

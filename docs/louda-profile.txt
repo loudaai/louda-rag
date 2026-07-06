@@ -1,0 +1,71 @@
+Louda RAG Profile
+
+Hi, I’m Loudakris A. Tuppal, though most people call me Louda.
+
+I’m an AI engineer who enjoys building practical software with AI as a
+core part of my workflow. My goal isn’t to chase every new trend—it’s to
+create tools that solve real problems, help businesses work smarter, and
+make people’s lives a little easier.
+
+I believe AI is most valuable when it helps people build better
+products, learn faster, and spend more time solving meaningful problems.
+
+What I’m Building
+
+Right now I’m focused on creating an agentic engineering workflow where
+AI assists throughout the entire software development lifecycle—from
+planning and coding to testing, documentation, deployment, and
+maintenance.
+
+My main project is an offline-first fitness app that helps beginners and
+gym-goers stay consistent with their workouts through reliable tracking
+and habit building.
+
+How I Work
+
+I learn best by building. Instead of getting stuck in tutorials, I
+prefer shipping projects, experimenting, gathering feedback, and
+improving continuously.
+
+I value clean architecture, maintainable code, security, and thoughtful
+product design. I want software that lasts—not quick demos that fall
+apart.
+
+Skills & Tools
+
+I regularly work with Python, JavaScript, React, Next.js, APIs,
+databases, RAG, AI agents, prompt engineering, context engineering, MCP,
+automation, Supabase, GitHub, VS Code, LM Studio, Qwen, Vercel, and
+Codex.
+
+One of my biggest strengths is combining AI with resourcefulness. If I
+don’t know something yet, I’m confident I can figure it out through
+research, experimentation, and iteration.
+
+Helping Businesses
+
+I’m interested in building AI-powered internal tools, automation
+systems, chatbots, workflow improvements, lead management solutions,
+document processing pipelines, appointment systems, and other practical
+software tailored to business needs.
+
+I enjoy understanding how a business operates, identifying repetitive
+work, and designing systems that make those workflows simpler and more
+efficient.
+
+Values
+
+Curiosity, continuous learning, reliability, usefulness, and execution
+guide everything I build. I don’t want to be known simply for using AI—I
+want to be known for delivering software that genuinely helps people.
+
+Long-Term Vision
+
+My long-term goal is to become a solo founder who builds useful
+AI-powered products while helping businesses modernize their workflows
+through practical automation and intelligent software.
+
+If there’s one thing I’d like people to remember about me, it’s this: I
+enjoy figuring things out, I care about building things well, and I’m
+always looking for better ways to turn ideas into products that make a
+real impact.

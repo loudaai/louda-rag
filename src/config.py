@@ -6,7 +6,7 @@ CHROMA_DIR = BASE_DIR / "chroma_db"
 DOCS_DIR = BASE_DIR / "docs"
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-GROQ_MODEL = "llama3-70b-8192"
+GROQ_MODEL = "llama-3.3-70b-versatile"
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 
 CHUNK_SIZE = 512
