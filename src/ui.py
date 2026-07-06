@@ -21,7 +21,7 @@ def inject_css():
         --faint: #8a8a92;
         --radius: 12px;
         --radius-lg: 16px;
-        --content-width: 42rem;
+        --content-width: 46rem;
     }
 
     * { font-family: 'Inter', system-ui, sans-serif; }
@@ -30,14 +30,21 @@ def inject_css():
         background-color: var(--bg);
     }
 
-    .block-container {
-        max-width: 56rem !important;
-        padding-top: 1rem !important;
+    .main > .block-container {
+        max-width: var(--content-width) !important;
+        padding: 1.5rem 1rem 5rem !important;
+        margin: 0 auto !important;
+    }
+
+    section[data-testid="stSidebar"] + .main .block-container {
+        max-width: var(--content-width) !important;
+        padding: 1.5rem 1rem 5rem !important;
+        margin: 0 auto !important;
     }
 
     .hero {
         text-align: center;
-        padding: 2.5rem 1rem 1.5rem;
+        padding: 2.5rem 0 1.5rem;
         animation: fadeIn 0.3s ease;
     }
 
@@ -67,15 +74,14 @@ def inject_css():
         font-weight: 400;
     }
 
-    .search-section {
-        max-width: var(--content-width);
-        margin: 0 auto;
-        padding: 0 1rem;
+    .stChatInput {
+        max-width: var(--content-width) !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
     }
 
-    .stChatInput {
-        max-width: var(--content-width);
-        margin: 0 auto;
+    .stChatInputContainer {
+        border: none !important;
     }
 
     .stChatInput textarea {
@@ -83,9 +89,10 @@ def inject_css():
         border: 1px solid var(--border) !important;
         border-radius: 24px !important;
         color: var(--fg) !important;
-        padding: 0.75rem 1.25rem !important;
+        padding: 0.75rem 3rem 0.75rem 1.25rem !important;
         font-size: 15px !important;
         transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        min-height: 48px !important;
     }
 
     .stChatInput textarea::placeholder {
@@ -97,14 +104,40 @@ def inject_css():
         box-shadow: 0 0 0 1px var(--border-strong) !important;
     }
 
-    div[data-testid="stChatInput"] {
-        position: relative;
+    div[data-testid="stChatInput"] button {
+        position: absolute !important;
+        right: 6px !important;
+        top: 6px !important;
+        width: 36px !important;
+        height: 36px !important;
+        border-radius: 50% !important;
+        background: var(--fg) !important;
+        border: none !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        padding: 0 !important;
+        z-index: 1 !important;
     }
 
-    .answer-section {
-        max-width: var(--content-width);
-        margin: 0 auto;
-        padding: 0 1rem;
+    div[data-testid="stChatInput"] button:hover {
+        opacity: 0.85;
+    }
+
+    div[data-testid="stChatInput"] button svg {
+        fill: var(--bg) !important;
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    div[data-testid="stChatInput"] button:disabled {
+        background: var(--surface-strong) !important;
+        opacity: 0.4;
+    }
+
+    div[data-testid="stChatInput"] button:disabled svg {
+        fill: var(--faint) !important;
     }
 
     .answer-card {
@@ -113,6 +146,9 @@ def inject_css():
         border-radius: var(--radius-lg);
         padding: 1.5rem;
         margin-bottom: 1.5rem;
+        max-width: var(--content-width);
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .answer-card .content {
@@ -129,64 +165,9 @@ def inject_css():
         margin-bottom: 0;
     }
 
-    .section-label {
-        font-size: 10px;
-        font-weight: 500;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--faint);
-        font-family: 'Inter', ui-monospace, monospace;
-        margin-bottom: 0.75rem;
-        max-width: var(--content-width);
-        margin-left: auto;
-        margin-right: auto;
-        padding: 0 1rem;
-    }
-
-    .source-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        padding: 0.75rem 1rem;
-        margin-bottom: 0.5rem;
-        transition: border-color 0.15s ease;
-        max-width: var(--content-width);
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .source-card:hover {
-        border-color: var(--border-strong);
-    }
-
-    .source-card .label {
-        font-size: 10px;
-        font-weight: 500;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: var(--faint);
-        font-family: 'Inter', ui-monospace, monospace;
-        margin-bottom: 0.2rem;
-    }
-
-    .source-card .label .source-file {
-        color: var(--muted);
-    }
-
-    .source-card .source-preview {
-        font-size: 13px;
-        color: var(--muted);
-        line-height: 1.5;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
     .user-message {
         max-width: var(--content-width);
         margin: 0 auto 1rem;
-        padding: 0 1rem;
         text-align: right;
     }
 
@@ -199,11 +180,11 @@ def inject_css():
         font-size: 14px;
         color: var(--fg);
         line-height: 1.5;
-        max-width: 80%;
+        max-width: 75%;
     }
 
     .sidebar-brand {
-        padding: 0.5rem 0 1rem;
+        padding: 0.25rem 0 1rem;
     }
 
     .sidebar-brand .logo {
@@ -287,6 +268,8 @@ def inject_css():
     .stSpinner > div {
         border-color: var(--border-strong) !important;
         border-top-color: var(--fg) !important;
+        width: 20px !important;
+        height: 20px !important;
     }
 
     .ingest-toast {
@@ -313,7 +296,9 @@ def inject_css():
     section[data-testid="stSidebar"] {
         background-color: var(--bg);
         border-right: 1px solid var(--border);
-        min-width: 260px !important;
+        min-width: 240px !important;
+        max-width: 280px !important;
+        width: 260px !important;
     }
 
     section[data-testid="stSidebar"] .st-emotion-cache-1gv3huu {
@@ -329,11 +314,53 @@ def inject_css():
         animation: fadeIn 0.3s ease;
     }
 
-    @media (max-width: 640px) {
-        .hero { padding: 1.5rem 0.5rem 1rem; }
-        .hero h1 { font-size: 1.6rem; }
-        .answer-card { padding: 1rem; border-radius: var(--radius); }
-        .user-message .bubble { max-width: 95%; font-size: 13px; }
+    @media (max-width: 768px) {
+        section[data-testid="stSidebar"] {
+            min-width: 100% !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            border-right: none !important;
+            border-bottom: 1px solid var(--border);
+            position: relative !important;
+        }
+
+        .main > .block-container,
+        section[data-testid="stSidebar"] + .main .block-container {
+            max-width: 100% !important;
+            padding: 1rem 0.75rem 6rem !important;
+        }
+
+        .hero { padding: 1.5rem 0 1rem; }
+        .hero h1 { font-size: 1.5rem; }
+
+        .answer-card {
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+
+        .user-message .bubble {
+            max-width: 100%;
+            font-size: 13px;
+        }
+
+        .stChatInput textarea {
+            font-size: 14px !important;
+            padding: 0.65rem 2.8rem 0.65rem 1rem !important;
+        }
+
+        div[data-testid="stChatInput"] button {
+            right: 4px !important;
+            top: 4px !important;
+            width: 32px !important;
+            height: 32px !important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero h1 { font-size: 1.3rem; }
+        .hero .sub { font-size: 13px; }
     }
     </style>
     """, unsafe_allow_html=True)
@@ -361,7 +388,7 @@ def render_welcome():
 
 def render_empty_state():
     st.markdown(f"""
-    <div style="text-align:center; padding: 2rem 1rem 3rem; animation: fadeIn 0.3s ease;">
+    <div style="text-align:center; padding: 2rem 0 3rem; animation: fadeIn 0.3s ease;">
         <div style="font-size:13px; color:var(--faint); font-family:'Inter',ui-monospace,monospace; letter-spacing:0.05em;">
             {EMPTY_UPLOAD_TEXT}
         </div>
@@ -369,25 +396,12 @@ def render_empty_state():
     """, unsafe_allow_html=True)
 
 
-def render_answer(answer: str, sources: list, chunks: list):
+def render_answer(answer: str):
     st.markdown(f"""
     <div class="answer-card fade-in">
         <div class="content">{answer}</div>
     </div>
     """, unsafe_allow_html=True)
-
-    if sources:
-        st.markdown('<div class="section-label">Sources</div>', unsafe_allow_html=True)
-        for chunk in chunks:
-            source_name = Path(chunk["source"]).name if chunk["source"] else "Unknown"
-            page_info = f" · p.{chunk['page']}" if chunk.get("page") is not None else ""
-            preview = chunk.get("content", "")
-            st.markdown(f"""
-            <div class="source-card fade-in">
-                <div class="label"><span class="source-file">{source_name}</span>{page_info}</div>
-                <div class="source-preview">{preview}...</div>
-            </div>
-            """, unsafe_allow_html=True)
 
 
 def render_sidebar():

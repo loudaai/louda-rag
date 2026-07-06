@@ -95,12 +95,7 @@ for message in st.session_state.messages:
         </div>
         """, unsafe_allow_html=True)
     else:
-        with st.chat_message("assistant"):
-            render_answer(
-                message["answer"],
-                message.get("sources", []),
-                message.get("chunks", []),
-            )
+        render_answer(message["answer"])
 
 if prompt := st.chat_input("Ask Louda AI a question..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
@@ -111,20 +106,12 @@ if prompt := st.chat_input("Ask Louda AI a question..."):
     </div>
     """, unsafe_allow_html=True)
 
-    with st.chat_message("assistant"):
-        with st.spinner(""):
-            result = ask(prompt)
-            render_answer(
-                result["answer"],
-                result["sources"],
-                result["chunks"],
-            )
+    with st.spinner(""):
+        result = ask(prompt)
 
     st.session_state.messages.append({
         "role": "assistant",
         "answer": result["answer"],
-        "sources": result["sources"],
-        "chunks": result["chunks"],
     })
 
-    st.rerun()
+    render_answer(result["answer"])
