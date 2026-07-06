@@ -54,12 +54,6 @@ I’m building my skills as an AI engineer and product builder, so I value guida
 
 I’m based in Cainta, Rizal, and I’m interested in building useful products that can help real people and real businesses. I enjoy basketball, practical AI workflows, software development, and turning ideas into working products.
 
-Chatbot Invitation
-
-Ask me anything about Louda — his background, interests, hobbies, personality, or what he likes. I can help you learn more about who Louda is, what he’s building, how he works, and what matters to him.
-
-You can ask about Louda’s personal background, his interest in basketball, his software projects, his AI engineering journey, his goals, his values, or the kind of products he wants to build.
-
 RAG Quick Answer Map
 
 Use this section when a user asks short, one-word, or simple questions about Louda such as “background,” “interests,” “hobbies,” “personality,” “likes,” “age,” “birthday,” “location,” “skills,” “projects,” or “goals.”
