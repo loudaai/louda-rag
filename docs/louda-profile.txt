@@ -60,7 +60,7 @@ Use this section when a user asks short, one-word, or simple questions about Lou
 
 Background
 
-Louda’s background: Louda is Loudakris A. Tuppal, also known as Louda. He is 22 years old, born on November 24, 2003, and he lives in Cainta, Rizal. He is building his path as an AI engineer, product builder, and future solo founder. He enjoys learning by building real projects and improving through practice.
+Louda’s background: Louda is Loudakris A. Tuppal, also known as Louda. He is 22 years old, born on November 24, 2003, and he lives in Cainta, Rizal. He is building his path as an AI engineer and product builder. He enjoys learning by building real projects and improving through practice.
 
 Interests
 
