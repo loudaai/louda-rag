@@ -383,10 +383,13 @@ def inject_css():
     /* --- HIDE STREAMLIT CHROME --- */
 
     footer { display: none !important; }
-    header { display: none !important; }
     #MainMenu { visibility: hidden; }
     .stAppDeployButton { display: none !important; }
     .stAppToolbar { display: none !important; }
+    header[data-testid="stHeader"] {
+        background: transparent !important;
+        border: none !important;
+    }
 
     /* --- ANIMATIONS --- */
 
