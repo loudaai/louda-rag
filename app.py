@@ -497,11 +497,11 @@ def inject_css():
             }
 
             .hero {
-                padding-top: 2rem;
+                padding-top: 2.5rem;
             }
 
             .hero h1 {
-                font-size: 2rem;
+                font-size: 2.6rem;
             }
 
             .answer-card {
@@ -514,32 +514,32 @@ def inject_css():
             }
 
             div[data-testid="stChatInput"] textarea {
-                min-height: 42px !important;
-                padding: 0.65rem 2.6rem 0.65rem 1rem !important;
-                font-size: 14px !important;
-                border-radius: 20px !important;
+                min-height: 38px !important;
+                padding: 0.55rem 2.4rem 0.55rem 0.9rem !important;
+                font-size: 13px !important;
+                border-radius: 18px !important;
             }
 
             div[data-testid="stChatInput"] button {
-                width: 28px !important;
-                height: 28px !important;
-                min-width: 28px !important;
+                width: 26px !important;
+                height: 26px !important;
+                min-width: 26px !important;
                 right: 4px !important;
                 bottom: 4px !important;
             }
 
             div[data-testid="stChatInput"] button svg {
-                width: 13px !important;
-                height: 13px !important;
+                width: 12px !important;
+                height: 12px !important;
             }
         }
 
         @media (max-width: 480px) {
             .hero h1 {
-                font-size: 1.7rem;
+                font-size: 2rem;
             }
             .hero-sub {
-                font-size: 14px;
+                font-size: 13px;
             }
         }
         </style>
