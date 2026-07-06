@@ -14,30 +14,6 @@ def _format_text(value: str) -> str:
     return escaped.replace("\n", "<br>")
 
 
-def _extract_source(source) -> dict:
-    """
-    Supports:
-    - LangChain Document objects
-    - plain dict sources
-    - strings
-    """
-    if hasattr(source, "metadata"):
-        metadata = source.metadata or {}
-        content = getattr(source, "page_content", "")
-    elif isinstance(source, dict):
-        metadata = source.get("metadata", source)
-        content = source.get("page_content", source.get("content", ""))
-    else:
-        metadata = {}
-        content = str(source)
-
-    return {
-        "source": metadata.get("source", "Uploaded document"),
-        "page": metadata.get("page", metadata.get("page_number", None)),
-        "content": content,
-    }
-
-
 def inject_css():
     st.markdown(
         """
@@ -46,7 +22,6 @@ def inject_css():
 
         :root {
             --bg: #0c0c0f;
-            --bg-soft: #101014;
             --ink: #f4f4f5;
             --muted: #a0a0a8;
             --faint: #8a8a92;
@@ -54,8 +29,6 @@ def inject_css():
             --surface-2: #1e1e22;
             --line: #2a2a30;
             --line-strong: #3a3a42;
-            --inverse: #f4f4f5;
-            --inverse-text: #0c0c0f;
             --danger: #ef4444;
         }
 
@@ -70,7 +43,7 @@ def inject_css():
 
         .stApp {
             background:
-                radial-gradient(circle at top center, rgba(255,255,255,0.055), transparent 34rem),
+                radial-gradient(circle at top center, rgba(255,255,255,0.05), transparent 34rem),
                 linear-gradient(180deg, #0c0c0f 0%, #09090b 100%);
             color: var(--ink);
         }
@@ -80,8 +53,8 @@ def inject_css():
             position: fixed;
             inset: 0;
             pointer-events: none;
-            opacity: 0.22;
-            background-image: radial-gradient(circle, rgba(244,244,245,0.55) 1px, transparent 1px);
+            opacity: 0.18;
+            background-image: radial-gradient(circle, rgba(244,244,245,0.45) 1px, transparent 1px);
             background-size: 9px 9px;
             mask-image: radial-gradient(circle at 50% 0%, black 0%, transparent 48%);
             -webkit-mask-image: radial-gradient(circle at 50% 0%, black 0%, transparent 48%);
@@ -196,22 +169,6 @@ def inject_css():
             animation: fadeUp 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
-        .hero-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            padding: 0.28rem 0.65rem;
-            border: 1px solid var(--line);
-            border-radius: 999px;
-            color: var(--muted);
-            font-family: "JetBrains Mono", monospace;
-            font-size: 10px;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            background: rgba(24,24,27,0.42);
-            margin-bottom: 1rem;
-        }
-
         .hero h1 {
             margin: 0;
             font-size: clamp(2.4rem, 7vw, 4.6rem);
@@ -277,22 +234,12 @@ def inject_css():
             position: relative;
             border: 1px solid var(--line);
             border-radius: 20px;
-            background:
-                linear-gradient(180deg, rgba(30,30,34,0.82), rgba(24,24,27,0.72));
+            background: rgba(24,24,27,0.72);
             padding: 1.35rem;
             margin: 0 0 1.2rem;
             box-shadow: 0 22px 50px -36px rgba(0,0,0,0.95);
             animation: fadeUp 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
             overflow: hidden;
-        }
-
-        .answer-card::before {
-            content: "";
-            position: absolute;
-            inset: 6px;
-            border: 1px solid rgba(244,244,245,0.035);
-            border-radius: 15px;
-            pointer-events: none;
         }
 
         .answer-topline {
@@ -309,17 +256,6 @@ def inject_css():
             color: var(--faint);
             letter-spacing: 0.18em;
             text-transform: uppercase;
-        }
-
-        .answer-badge {
-            border: 1px solid var(--line-strong);
-            color: var(--muted);
-            border-radius: 999px;
-            padding: 0.16rem 0.45rem;
-            font-family: "JetBrains Mono", monospace;
-            font-size: 9px;
-            text-transform: uppercase;
-            letter-spacing: 0.13em;
         }
 
         .answer-content {
@@ -346,108 +282,90 @@ def inject_css():
             animation: fadeUp 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
-        /* ---------- sources ---------- */
-
-        .sources-wrap {
-            margin: -0.45rem 0 1.35rem;
-            animation: fadeUp 470ms cubic-bezier(0.16, 1, 0.3, 1) both;
-        }
-
-        .sources-title {
-            margin: 0 0 0.55rem;
-            color: var(--faint);
-            font-family: "JetBrains Mono", monospace;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-        }
-
-        .source-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0.7rem;
-        }
-
-        .source-card {
-            border: 1px solid var(--line);
-            border-radius: 14px;
-            padding: 0.78rem;
-            background: rgba(24,24,27,0.45);
-            min-height: 5rem;
-        }
-
-        .source-name {
-            color: var(--ink);
-            font-size: 12px;
-            font-weight: 600;
-            line-height: 1.35;
-            word-break: break-word;
-        }
-
-        .source-meta {
-            margin-top: 0.35rem;
-            color: var(--faint);
-            font-family: "JetBrains Mono", monospace;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .source-excerpt {
-            margin-top: 0.55rem;
-            color: var(--muted);
-            font-size: 12px;
-            line-height: 1.5;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        /* ---------- input ---------- */
+        /* ---------- ChatGPT-like input ---------- */
 
         div[data-testid="stChatInput"] {
             max-width: 820px !important;
             margin: 0 auto !important;
+            background: transparent !important;
+        }
+
+        div[data-testid="stChatInput"] > div {
+            position: relative !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
         }
 
         div[data-testid="stChatInput"] textarea {
-            background: rgba(24,24,27,0.96) !important;
-            border: 1px solid var(--line) !important;
-            border-radius: 999px !important;
+            background: #18181b !important;
+            border: 1px solid #2a2a30 !important;
+            border-radius: 28px !important;
             color: var(--ink) !important;
-            min-height: 58px !important;
-            padding: 1rem 3.5rem 1rem 1.35rem !important;
-            box-shadow: 0 24px 70px -42px rgba(0,0,0,1) !important;
+            min-height: 56px !important;
+            padding: 1rem 3.6rem 1rem 1.25rem !important;
             font-size: 15px !important;
+            line-height: 1.5 !important;
+            box-shadow: none !important;
+            outline: none !important;
+            resize: none !important;
         }
 
-        div[data-testid="stChatInput"] textarea:focus {
-            border-color: var(--line-strong) !important;
-            box-shadow: 0 0 0 1px rgba(244,244,245,0.08), 0 24px 70px -42px rgba(0,0,0,1) !important;
+        div[data-testid="stChatInput"] textarea:focus,
+        div[data-testid="stChatInput"] textarea:focus-visible,
+        div[data-testid="stChatInput"] textarea:active {
+            border: 1px solid #2a2a30 !important;
+            outline: none !important;
+            box-shadow: none !important;
         }
 
         div[data-testid="stChatInput"] textarea::placeholder {
             color: var(--faint) !important;
+            opacity: 0.8 !important;
         }
 
         div[data-testid="stChatInput"] button {
+            position: absolute !important;
+            right: 10px !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+
+            width: 38px !important;
+            height: 38px !important;
+            min-width: 38px !important;
+
+            margin: 0 !important;
+            padding: 0 !important;
+
+            border-radius: 999px !important;
+            border: none !important;
+
             background: var(--ink) !important;
             color: var(--bg) !important;
-            border-radius: 999px !important;
-            width: 40px !important;
-            height: 40px !important;
-            margin-right: 0.28rem !important;
-            transition: transform 180ms ease, opacity 180ms ease !important;
+
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+
+            box-shadow: none !important;
+            transition: opacity 160ms ease !important;
+            z-index: 5 !important;
         }
 
         div[data-testid="stChatInput"] button:hover {
-            transform: scale(1.04) !important;
-            opacity: 0.86 !important;
+            opacity: 0.85 !important;
+            transform: translateY(-50%) !important;
+        }
+
+        div[data-testid="stChatInput"] button:disabled {
+            background: #3a3a42 !important;
+            opacity: 0.55 !important;
         }
 
         div[data-testid="stChatInput"] button svg {
             fill: var(--bg) !important;
+            width: 17px !important;
+            height: 17px !important;
         }
 
         /* ---------- upload/buttons ---------- */
@@ -542,10 +460,6 @@ def inject_css():
                 font-size: 2.7rem;
             }
 
-            .source-grid {
-                grid-template-columns: 1fr;
-            }
-
             .answer-card {
                 padding: 1rem;
                 border-radius: 16px;
@@ -594,8 +508,10 @@ def render_sidebar():
             unsafe_allow_html=True,
         )
 
-        st.markdown('<div class="micro-label">upload knowledge</div>',
-                    unsafe_allow_html=True)
+        st.markdown(
+            '<div class="micro-label">upload knowledge</div>',
+            unsafe_allow_html=True,
+        )
 
         uploaded_files = st.file_uploader(
             "Upload PDFs, TXT, or Markdown files",
@@ -631,13 +547,12 @@ def render_welcome(doc_count: int = 0):
     st.markdown(
         f"""
         <section class="hero">
-            <div class="hero-chip">● Louda knowledge system</div>
             <h1>Ask Louda AI</h1>
             <div class="hero-sub">{_safe(WELCOME_TEXT)}</div>
             <div class="hero-stat-row">
                 <div class="hero-pill">{doc_count} chunks indexed</div>
                 <div class="hero-pill">Groq powered</div>
-                <div class="hero-pill">source grounded</div>
+                <div class="hero-pill">Private RAG</div>
             </div>
         </section>
         """,
@@ -669,56 +584,15 @@ def render_user_message(content: str):
     )
 
 
-def render_answer(answer: str, sources=None):
+def render_answer(answer: str):
     st.markdown(
         f"""
         <article class="answer-card">
             <div class="answer-topline">
                 <div class="answer-label">Louda AI</div>
-                <div class="answer-badge">grounded answer</div>
             </div>
             <div class="answer-content">{_format_text(answer)}</div>
         </article>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    if sources:
-        render_sources(sources)
-
-
-def render_sources(sources):
-    if not sources:
-        return
-
-    source_items = []
-    for source in sources[:4]:
-        parsed = _extract_source(source)
-        page = parsed["page"]
-        source_name = parsed["source"]
-        excerpt = parsed["content"]
-
-        page_text = f"Page {int(page) + 1}" if isinstance(page,
-                                                          int) else "Retrieved source"
-
-        source_items.append(
-            f"""
-            <div class="source-card">
-                <div class="source-name">{_safe(source_name)}</div>
-                <div class="source-meta">{_safe(page_text)}</div>
-                <div class="source-excerpt">{_format_text(excerpt[:260])}</div>
-            </div>
-            """
-        )
-
-    st.markdown(
-        f"""
-        <section class="sources-wrap">
-            <div class="sources-title">Sources</div>
-            <div class="source-grid">
-                {''.join(source_items)}
-            </div>
-        </section>
         """,
         unsafe_allow_html=True,
     )
