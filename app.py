@@ -341,16 +341,17 @@ def inject_css():
         div[data-testid="stChatInput"] {
             max-width: 820px !important;
             margin: 0 auto !important;
-            position: relative !important;
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
         }
 
-        div[data-testid="stChatInput"] > div {
+        div[data-testid="stChatInput"] > div,
+        div[data-testid="stChatInput"] > div > div {
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
+            position: relative !important;
         }
 
         div[data-testid="stChatInput"] textarea {
@@ -394,7 +395,7 @@ def inject_css():
             align-items: center !important;
             justify-content: center !important;
             transition: opacity 180ms ease !important;
-            z-index: 1 !important;
+            z-index: 5 !important;
             border: none !important;
             box-shadow: none !important;
             cursor: pointer !important;
@@ -495,11 +496,11 @@ def inject_css():
             }
 
             .hero {
-                padding-top: 2.5rem;
+                padding-top: 2rem;
             }
 
             .hero h1 {
-                font-size: 2.7rem;
+                font-size: 2rem;
             }
 
             .answer-card {
@@ -509,6 +510,33 @@ def inject_css():
 
             .user-bubble {
                 max-width: 100%;
+            }
+
+            div[data-testid="stChatInput"] textarea {
+                min-height: 46px !important;
+                padding: 0.75rem 3rem 0.75rem 1rem !important;
+                font-size: 14px !important;
+            }
+
+            div[data-testid="stChatInput"] button {
+                width: 30px !important;
+                height: 30px !important;
+                min-width: 30px !important;
+                right: 5px !important;
+            }
+
+            div[data-testid="stChatInput"] button svg {
+                width: 14px !important;
+                height: 14px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+            .hero-sub {
+                font-size: 14px;
             }
         }
         </style>
