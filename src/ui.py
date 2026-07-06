@@ -28,44 +28,44 @@ def inject_css():
 
     .stApp { background-color: var(--bg); }
 
-    /* --- LAYOUT : single centered column --- */
+    /* --- LAYOUT: centered column --- */
 
-    .main .block-container {
+    main {
         max-width: var(--content-w) !important;
-        padding: 0 1rem !important;
         margin: 0 auto !important;
+        padding: 0 1rem !important;
+        width: 100% !important;
     }
 
-    /* --- Streamlit chrome reset --- */
+    .block-container {
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* --- RESET ALL FOCUS RINGS --- */
 
     *:focus, *:focus-visible, *:active {
         outline: none !important;
         box-shadow: none !important;
-        border-color: var(--border) !important;
     }
 
     *::-moz-focus-inner { border: 0 !important; }
 
-    button:focus, button:focus-visible, button:active {
-        outline: none !important;
-        box-shadow: none !important;
-    }
-
+    button:focus, button:focus-visible, button:active,
     textarea:focus, textarea:focus-visible, textarea:active,
-    input:focus, input:focus-visible, input:active {
+    input:focus, input:focus-visible, input:active,
+    select:focus, select:focus-visible, select:active,
+    [tabindex]:focus, [tabindex]:focus-visible, [tabindex]:active {
         outline: none !important;
         box-shadow: none !important;
-    }
-
-    .st-emotion-cache-1gv3huu, .st-emotion-cache-1dp5vir {
-        background-color: transparent !important;
     }
 
     /* --- HERO --- */
 
     .hero {
         text-align: center;
-        padding: 3.5rem 0 1.25rem;
+        padding: 3rem 0 1rem;
         animation: fadeIn 0.3s ease;
     }
 
@@ -81,7 +81,7 @@ def inject_css():
     .hero .micro {
         font-size: 10px;
         font-weight: 500;
-        letter-spacing: 0.18em;
+        letter-spacing: 0.2em;
         text-transform: uppercase;
         color: var(--faint);
         font-family: 'Inter', ui-monospace, monospace;
@@ -91,15 +91,15 @@ def inject_css():
     .hero .sub {
         font-size: 14px;
         color: var(--muted);
-        margin-top: 0.4rem;
+        margin-top: 0.35rem;
         font-weight: 400;
     }
 
     /* --- CHAT INPUT --- */
 
     .stChatInput {
-        max-width: var(--content-w) !important;
-        margin: 0 auto !important;
+        max-width: 100% !important;
+        margin: 0 !important;
         padding: 0 !important;
     }
 
@@ -108,19 +108,20 @@ def inject_css():
         border: 1px solid var(--border) !important;
         border-radius: 24px !important;
         color: var(--fg) !important;
-        padding: 0.85rem 3.2rem 0.85rem 1.5rem !important;
+        padding: 0.8rem 3.2rem 0.8rem 1.5rem !important;
         font-size: 15px !important;
         caret-color: var(--fg) !important;
-        min-height: 52px !important;
+        min-height: 50px !important;
         transition: border-color 0.15s ease;
         resize: none !important;
         outline: none !important;
         box-shadow: none !important;
+        line-height: 1.4 !important;
     }
 
     .stChatInput textarea::placeholder {
         color: var(--faint) !important;
-        opacity: 0.6;
+        opacity: 0.5;
     }
 
     .stChatInput textarea:focus {
@@ -129,7 +130,6 @@ def inject_css():
         box-shadow: none !important;
     }
 
-    /* send button wrapper reset */
     div[data-testid="stChatInput"] {
         position: relative !important;
     }
@@ -141,7 +141,7 @@ def inject_css():
 
     div[data-testid="stChatInput"] button {
         position: absolute !important;
-        right: 7px !important;
+        right: 6px !important;
         top: 50% !important;
         transform: translateY(-50%) !important;
         width: 38px !important;
@@ -157,12 +157,11 @@ def inject_css():
         z-index: 1 !important;
         outline: none !important;
         box-shadow: none !important;
-        transition: opacity 0.15s ease, transform 0.15s ease;
+        transition: opacity 0.15s ease;
     }
 
     div[data-testid="stChatInput"] button:hover {
-        opacity: 0.8;
-        transform: translateY(-50%) scale(1.04) !important;
+        opacity: 0.75;
         background: var(--fg) !important;
     }
 
@@ -182,7 +181,7 @@ def inject_css():
 
     div[data-testid="stChatInput"] button:disabled {
         background: var(--surface-strong) !important;
-        opacity: 0.35;
+        opacity: 0.3;
     }
 
     div[data-testid="stChatInput"] button:disabled svg {
@@ -219,7 +218,7 @@ def inject_css():
         background: var(--surface-strong);
         border: 1px solid var(--border);
         border-radius: 18px 18px 4px 18px;
-        padding: 0.6rem 1.2rem;
+        padding: 0.55rem 1.15rem;
         font-size: 14px;
         color: var(--fg);
         line-height: 1.5;
@@ -239,7 +238,7 @@ def inject_css():
         background-color: var(--bg);
     }
 
-    .sidebar-brand { padding: 0 0 1rem; }
+    .sidebar-brand { padding: 0 0 0.75rem; }
 
     .sidebar-brand .logo {
         font-size: 13px;
@@ -257,7 +256,7 @@ def inject_css():
     .sidebar-label {
         font-size: 10px;
         font-weight: 500;
-        letter-spacing: 0.18em;
+        letter-spacing: 0.2em;
         text-transform: uppercase;
         color: var(--faint);
         font-family: 'Inter', ui-monospace, monospace;
@@ -284,8 +283,52 @@ def inject_css():
     hr {
         border: none !important;
         border-top: 1px solid var(--border) !important;
-        opacity: 0.5;
-        margin: 1rem 0;
+        margin: 0.85rem 0;
+    }
+
+    /* --- BUTTONS: all borderless minimal --- */
+
+    .stButton button {
+        background: transparent !important;
+        color: var(--muted) !important;
+        border: none !important;
+        border-radius: 6px !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        padding: 0.3rem 0.75rem !important;
+        transition: background 0.15s ease, color 0.15s ease !important;
+        outline: none !important;
+        box-shadow: none !important;
+        line-height: 1.4 !important;
+    }
+
+    .stButton button:hover {
+        background: var(--surface) !important;
+        color: var(--fg) !important;
+        border: none !important;
+    }
+
+    .stButton button:focus,
+    .stButton button:focus-visible,
+    .stButton button:active {
+        outline: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        background: var(--surface) !important;
+    }
+
+    /* sidebar buttons: text-only */
+    section[data-testid="stSidebar"] .stButton button {
+        font-size: 11px !important;
+        padding: 0.2rem 0 !important;
+        color: var(--faint) !important;
+        width: auto !important;
+        min-width: 0 !important;
+    }
+
+    section[data-testid="stSidebar"] .stButton button:hover {
+        color: var(--muted) !important;
+        background: transparent !important;
     }
 
     /* --- FILE UPLOADER --- */
@@ -294,7 +337,7 @@ def inject_css():
         border: 1px dashed var(--border) !important;
         border-radius: var(--radius) !important;
         background: transparent !important;
-        padding: 1.2rem !important;
+        padding: 1rem !important;
         transition: border-color 0.15s ease;
     }
 
@@ -303,56 +346,18 @@ def inject_css():
     }
 
     div[data-testid="stFileUploader"] button {
+        background: var(--surface) !important;
+        color: var(--muted) !important;
+        border: none !important;
+        border-radius: 6px !important;
+        font-size: 12px !important;
+        padding: 0.25rem 1rem !important;
+        transition: background 0.15s ease;
+    }
+
+    div[data-testid="stFileUploader"] button:hover {
         background: var(--surface-strong) !important;
-        color: var(--muted) !important;
-        border: 1px solid var(--border) !important;
-        border-radius: 8px !important;
-        font-size: 12px !important;
-        padding: 0.3rem 1rem !important;
-    }
-
-    /* --- BUTTONS : all minimal --- */
-
-    .stButton button {
-        background: transparent !important;
-        color: var(--muted) !important;
-        border: none !important;
-        border-radius: 8px !important;
-        font-size: 12px !important;
-        font-weight: 500 !important;
-        padding: 0.35rem 0.85rem !important;
-        transition: background 0.15s ease, color 0.15s ease !important;
-        outline: none !important;
-        box-shadow: none !important;
-    }
-
-    .stButton button:hover {
-        background: var(--surface) !important;
         color: var(--fg) !important;
-        border: none !important;
-        outline: none !important;
-        box-shadow: none !important;
-    }
-
-    .stButton button:focus, .stButton button:focus-visible, .stButton button:active {
-        outline: none !important;
-        box-shadow: none !important;
-        border: none !important;
-        background: var(--surface) !important;
-    }
-
-    /* sidebar "clear" button - even more minimal */
-    section[data-testid="stSidebar"] .stButton button {
-        font-size: 11px !important;
-        padding: 0.25rem 0 !important;
-        color: var(--faint) !important;
-        border: none !important;
-        width: auto !important;
-    }
-
-    section[data-testid="stSidebar"] .stButton button:hover {
-        color: var(--muted) !important;
-        background: transparent !important;
     }
 
     /* --- SPINNER --- */
@@ -360,8 +365,8 @@ def inject_css():
     .stSpinner > div {
         border-color: var(--border-strong) !important;
         border-top-color: var(--fg) !important;
-        width: 20px !important;
-        height: 20px !important;
+        width: 18px !important;
+        height: 18px !important;
     }
 
     /* --- INGESTION TOAST --- */
@@ -378,24 +383,24 @@ def inject_css():
     /* --- HIDE STREAMLIT CHROME --- */
 
     footer { display: none !important; }
+    header { display: none !important; }
     #MainMenu { visibility: hidden; }
-    header { visibility: hidden; }
+    .stAppDeployButton { display: none !important; }
+    .stAppToolbar { display: none !important; }
 
     /* --- ANIMATIONS --- */
 
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(6px); }
+        from { opacity: 0; transform: translateY(5px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
-    .fade-in { animation: fadeIn 0.3s ease; }
+    .fade-in { animation: fadeIn 0.25s ease; }
 
     /* --- RESPONSIVE --- */
 
     @media (max-width: 820px) {
-        :root { --content-w: 100%; }
-
-        .main .block-container {
+        main {
             padding: 0 0.75rem !important;
         }
 
@@ -406,16 +411,15 @@ def inject_css():
             border-bottom: 1px solid var(--border);
         }
 
-        .hero { padding: 2rem 0 1rem; }
+        .hero { padding: 2rem 0 0.75rem; }
         .hero h1 { font-size: 1.5rem; }
 
         .answer-card { padding: 1rem; }
-
-        .user-message .bubble { max-width: 100%; }
+        .user-message .bubble { max-width: 100%; font-size: 13px; }
 
         .stChatInput textarea {
             font-size: 14px !important;
-            padding: 0.75rem 2.8rem 0.75rem 1rem !important;
+            padding: 0.7rem 2.8rem 0.7rem 1rem !important;
             min-height: 46px !important;
         }
 
@@ -427,9 +431,9 @@ def inject_css():
     }
 
     @media (max-width: 480px) {
+        .hero { padding: 1.5rem 0 0.5rem; }
         .hero h1 { font-size: 1.25rem; }
         .hero .sub { font-size: 13px; }
-        .hero { padding: 1.5rem 0 0.75rem; }
     }
     </style>
     """, unsafe_allow_html=True)
@@ -447,7 +451,7 @@ def render_welcome():
 
 def render_empty_state():
     st.markdown(f"""
-    <div style="text-align:center; padding: 1.5rem 0 2.5rem; animation: fadeIn 0.3s ease;">
+    <div style="text-align:center; padding: 1.5rem 0 2rem; animation: fadeIn 0.25s ease;">
         <div style="font-size:13px; color:var(--faint); font-family:'Inter',ui-monospace,monospace; letter-spacing:0.05em;">
             {EMPTY_UPLOAD_TEXT}
         </div>
