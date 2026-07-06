@@ -3,7 +3,6 @@ import html
 import streamlit as st
 
 from src.prompts import EMPTY_UPLOAD_TEXT, WELCOME_TEXT
-from src.vector_store import count_documents
 
 
 def _safe(value: str) -> str:
@@ -82,86 +81,6 @@ def inject_css() -> None:
         #MainMenu,
         footer {
             visibility: hidden !important;
-        }
-
-        /* ---------- sidebar ---------- */
-
-        section[data-testid="stSidebar"] {
-            background:
-                linear-gradient(180deg, rgba(24,24,27,0.94), rgba(12,12,15,0.96)) !important;
-            border-right: 1px solid var(--line) !important;
-        }
-
-        section[data-testid="stSidebar"] > div {
-            padding-top: 1.35rem;
-        }
-
-        .sidebar-brand {
-            padding: 0.25rem 0 0.85rem;
-        }
-
-        .sidebar-kicker,
-        .micro-label {
-            font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-            font-size: 10px;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: var(--faint);
-        }
-
-        .sidebar-logo {
-            margin-top: 0.35rem;
-            font-size: 1.08rem;
-            font-weight: 700;
-            letter-spacing: -0.04em;
-            color: var(--ink);
-        }
-
-        .sidebar-tagline {
-            margin-top: 0.15rem;
-            font-size: 12px;
-            color: var(--muted);
-            line-height: 1.5;
-        }
-
-        .side-card {
-            border: 1px solid var(--line);
-            background: rgba(24,24,27,0.55);
-            border-radius: 16px;
-            padding: 0.9rem;
-            margin: 0.75rem 0;
-        }
-
-        .status-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.75rem;
-            color: var(--muted);
-            font-size: 12px;
-            line-height: 1.5;
-        }
-
-        .status-dot {
-            display: inline-block;
-            width: 7px;
-            height: 7px;
-            border-radius: 999px;
-            background: var(--ink);
-            margin-right: 0.4rem;
-            animation: pulse 1.8s ease-in-out infinite;
-        }
-
-        .doc-number {
-            font-family: "JetBrains Mono", monospace;
-            color: var(--ink);
-            font-size: 12px;
-        }
-
-        hr {
-            border: none !important;
-            border-top: 1px solid var(--line) !important;
-            margin: 1rem 0 !important;
         }
 
         /* ---------- hero ---------- */
@@ -402,56 +321,6 @@ def inject_css() -> None:
             color: #0c0c0f !important;
         }
 
-        /* ---------- upload/buttons ---------- */
-
-        div[data-testid="stFileUploader"] section {
-            background: rgba(24,24,27,0.36) !important;
-            border: 1px dashed var(--line-strong) !important;
-            border-radius: 16px !important;
-            padding: 1rem !important;
-        }
-
-        div[data-testid="stFileUploader"] section:hover {
-            background: rgba(30,30,34,0.55) !important;
-            border-color: var(--faint) !important;
-        }
-
-        div[data-testid="stFileUploader"] button,
-        .stButton button {
-            background: transparent !important;
-            color: var(--muted) !important;
-            border: 1px solid var(--line) !important;
-            border-radius: 999px !important;
-            font-family: "JetBrains Mono", monospace !important;
-            font-size: 10px !important;
-            text-transform: uppercase !important;
-            letter-spacing: 0.12em !important;
-            padding: 0.38rem 0.75rem !important;
-            transition: all 180ms ease !important;
-        }
-
-        div[data-testid="stFileUploader"] button:hover,
-        .stButton button:hover {
-            color: var(--ink) !important;
-            border-color: var(--line-strong) !important;
-            background: rgba(244,244,245,0.04) !important;
-        }
-
-        .ingest-toast {
-            margin: 0.6rem 0;
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            padding: 0.7rem;
-            color: var(--muted);
-            font-size: 12px;
-            line-height: 1.4;
-            background: rgba(24,24,27,0.42);
-        }
-
-        .ingest-toast.error {
-            color: var(--danger);
-        }
-
         .stAlert {
             border-radius: 16px !important;
         }
@@ -467,11 +336,6 @@ def inject_css() -> None:
                 opacity: 1;
                 transform: translateY(0);
             }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.28; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -591,74 +455,6 @@ def inject_css() -> None:
     )
 
 
-def render_sidebar():
-    with st.sidebar:
-        st.markdown(
-            """
-            <div class="sidebar-brand">
-                <div class="sidebar-kicker">personal rag</div>
-                <div class="sidebar-logo">Louda AI</div>
-                <div class="sidebar-tagline">A private knowledge assistant built from Louda's documents.</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-        st.markdown("<hr>", unsafe_allow_html=True)
-
-        doc_count = count_documents()
-
-        st.markdown(
-            f"""
-            <div class="side-card">
-                <div class="status-row">
-                    <span><span class="status-dot"></span>System online</span>
-                    <span class="doc-number">{doc_count}</span>
-                </div>
-                <div class="status-row" style="margin-top:0.45rem;">
-                    <span>Stored chunks</span>
-                    <span class="doc-number">{doc_count}</span>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-        st.markdown(
-            '<div class="micro-label">upload knowledge</div>',
-            unsafe_allow_html=True,
-        )
-
-        uploaded_files = st.file_uploader(
-            "Upload PDFs, TXT, or Markdown files",
-            type=["pdf", "txt", "md"],
-            accept_multiple_files=True,
-            label_visibility="collapsed",
-        )
-
-        st.markdown("<hr>", unsafe_allow_html=True)
-
-        if doc_count > 0:
-            if st.button("Clear knowledge base", use_container_width=True):
-                from src.vector_store import delete_all
-
-                delete_all()
-                st.session_state.messages = []
-                st.session_state.ingested = set()
-                st.rerun()
-
-        st.markdown(
-            """
-            <div style="margin-top:1rem;color:var(--faint);font-size:11px;line-height:1.6;">
-                Louda AI only answers from the uploaded knowledge base. If something is missing, it should say Louda has not shared it yet.
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-        return uploaded_files
-
-
 def render_welcome(doc_count: int = 0):
     st.markdown(
         f"""
@@ -677,7 +473,7 @@ def render_empty_state():
         <div class="empty-state">
             {_safe(EMPTY_UPLOAD_TEXT)}
             <br><br>
-            Upload Louda's profile, project notes, docs, or markdown files from the sidebar to start.
+            Upload Louda's profile, project notes, docs, or markdown files to start.
         </div>
         """,
         unsafe_allow_html=True,
@@ -709,18 +505,4 @@ def render_answer(answer: str):
     )
 
 
-def render_ingestion_status(success: bool, name: str):
-    if success:
-        st.markdown(
-            f"""
-            <div class="ingest-toast">✓ {_safe(name)} added to Louda AI</div>
-            """,
-            unsafe_allow_html=True,
-        )
-    else:
-        st.markdown(
-            f"""
-            <div class="ingest-toast error">✗ Failed to ingest {_safe(name)}</div>
-            """,
-            unsafe_allow_html=True,
-        )
+

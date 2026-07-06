@@ -1,5 +1,3 @@
-import os
-import tempfile
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -10,12 +8,10 @@ import streamlit as st
 
 from src.ui import (
     inject_css,
-    render_sidebar,
     render_welcome,
     render_empty_state,
     render_answer,
     render_user_message,
-    render_ingestion_status,
 )
 from src.rag import ask
 from src.vector_store import add_documents, count_documents
@@ -27,7 +23,7 @@ st.set_page_config(
     page_title="Louda AI",
     page_icon="🧠",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
 inject_css()
@@ -89,41 +85,6 @@ def auto_ingest_docs_folder() -> None:
             st.warning(f"Could not auto-ingest {doc_file.name}: {e}")
 
 
-def handle_uploads(uploaded_files) -> None:
-    if not uploaded_files:
-        return
-
-    for uploaded_file in uploaded_files:
-        if uploaded_file.name in st.session_state.ingested:
-            continue
-
-        suffix = Path(uploaded_file.name).suffix
-
-        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
-            tmp.write(uploaded_file.getvalue())
-            tmp_path = tmp.name
-
-        try:
-            docs, _ = load_document(tmp_path)
-            chunks = chunk_documents(docs)
-
-            for chunk in chunks:
-                chunk.metadata["source"] = uploaded_file.name
-
-            success = safe_add_documents(chunks)
-            render_ingestion_status(success, uploaded_file.name)
-
-            if success:
-                st.session_state.ingested.add(uploaded_file.name)
-
-        except Exception as e:
-            st.error(f"Could not process {uploaded_file.name}: {e}")
-
-        finally:
-            if os.path.exists(tmp_path):
-                os.unlink(tmp_path)
-
-
 def normalize_rag_result(result) -> str:
     """
     Only return the assistant answer for UI display.
@@ -164,9 +125,6 @@ def main() -> None:
 
     init_state()
     auto_ingest_docs_folder()
-
-    uploaded_files = render_sidebar()
-    handle_uploads(uploaded_files)
 
     doc_count = count_documents()
 
